@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
               child: IndexedStack(index: _selectedIndex, children: [
             LandingPage(
-              onItemTapped: (index) {},
+              onItemTapped: _onItemTapped,
             ),
             const KelolaMobilPage(),
             const LaporanPermobilMenuPage(),
