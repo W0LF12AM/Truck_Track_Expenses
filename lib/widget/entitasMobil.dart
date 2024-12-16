@@ -7,14 +7,14 @@ class Entitasmobil extends StatelessWidget {
   final int number;
   final String platnomor;
   final VoidCallback navigate;
-  final String iconAction;
+  
 
   const Entitasmobil(
       {super.key,
       required this.number,
       required this.platnomor,
       required this.navigate,
-      required this.iconAction});
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -66,15 +66,18 @@ class Entitasmobil extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                  padding: EdgeInsets.all(8),
-                  width: MediaQuery.of(context).size.width * 0.03,
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  decoration: BoxDecoration(
-                      color: mainColor, borderRadius: BorderRadius.circular(5)),
-                  child: SvgPicture.asset(
-                    'assets/delete icon.svg',
-                  ))
+              GestureDetector(
+                onTap: navigate,
+                child: Container(
+                    padding: EdgeInsets.all(8),
+                    width: MediaQuery.of(context).size.width * 0.03,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    decoration: BoxDecoration(
+                        color: mainColor, borderRadius: BorderRadius.circular(5)),
+                    child: SvgPicture.asset(
+                      'assets/delete icon.svg',
+                    )),
+              )
             ],
           ),
         ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
 import 'package:note_app_vtwo/widget/entitasMobil.dart';
+import 'package:note_app_vtwo/widget/tambahMobilDialog.dart';
 import 'package:note_app_vtwo/widget/userHeader_custom.dart';
 
 class KelolaMobilPage extends StatelessWidget {
@@ -25,68 +27,30 @@ class KelolaMobilPage extends StatelessWidget {
                     child: Column(
                       children: [
                         Entitasmobil(
-                          iconAction: 'assets/delete icon.svg',
-                          navigate: () {},
-                          number: 1,
-                          platnomor: 'F 1234 CD',
-                        ),
-                        Entitasmobil(
-                          iconAction: 'assets/delete icon.svg',
-                          navigate: () {},
-                          number: 1,
-                          platnomor: 'F 1234 CD',
-                        ),
-                        Entitasmobil(
-                          iconAction: 'assets/delete icon.svg',
-                          navigate: () {},
-                          number: 1,
-                          platnomor: 'F 1234 CD',
-                        ),
-                        Entitasmobil(
-                          iconAction: 'assets/delete icon.svg',
-                          navigate: () {},
-                          number: 1,
-                          platnomor: 'F 1234 CD',
-                        ),
-                        Entitasmobil(
-                          iconAction: 'assets/delete icon.svg',
-                          navigate: () {},
-                          number: 1,
-                          platnomor: 'F 1234 CD',
-                        ),
-                        Entitasmobil(
-                          iconAction: 'assets/delete icon.svg',
-                          navigate: () {},
-                          number: 1,
-                          platnomor: 'F 1234 CD',
-                        ),
-                        Entitasmobil(
-                          iconAction: 'assets/delete icon.svg',
-                          navigate: () {},
-                          number: 1,
-                          platnomor: 'F 1234 CD',
-                        ),
-                        Entitasmobil(
-                          iconAction: 'assets/delete icon.svg',
-                          navigate: () {},
-                          number: 1,
-                          platnomor: 'F 1234 CD',
-                        ),
-                        Entitasmobil(
-                          iconAction: 'assets/delete icon.svg',
-                          navigate: () {},
-                          number: 1,
-                          platnomor: 'F 1234 CD',
-                        ),
-                        Entitasmobil(
-                          iconAction: 'assets/delete icon.svg',
-                          navigate: () {},
-                          number: 1,
-                          platnomor: 'F 1234 CD',
-                        ),
-                        Entitasmobil(
-                          iconAction: 'assets/delete icon.svg',
-                          navigate: () {},
+                          navigate: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    title: Row(
+                                      // children: [
+                                      //   Icon(
+                                      //     Icons.cancel,
+                                      //     color: expenseColor,
+                                      //     size: 40,
+                                      //   ),
+                                      //   SizedBox(
+                                      //     width: 10,
+                                      //   ),
+                                      //   Text('Hapus Entitas')
+                                      // ],
+                                    ),
+                                  );
+                                });
+                          },
                           number: 1,
                           platnomor: 'F 1234 CD',
                         ),
@@ -107,7 +71,13 @@ class KelolaMobilPage extends StatelessWidget {
         height: 70,
         child: FloatingActionButton(
           backgroundColor: secondaryColor,
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Tambahmobildialog();
+                });
+          },
           child: Container(
             child: Icon(
               Icons.add,
