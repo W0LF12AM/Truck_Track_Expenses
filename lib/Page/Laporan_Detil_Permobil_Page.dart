@@ -23,7 +23,10 @@ class LaporanDetilPermobilPage extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Maintenancecarhistory()
+                Maintenancecarhistory(
+                  namaOnderdil: 'Bengsin',
+                  hargaOnderdil: '2.000.000',
+                )
               ],
             ),
           )

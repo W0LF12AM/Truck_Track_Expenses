@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,7 +19,7 @@ class UserheaderLaporanDetail extends StatelessWidget {
       children: [
         Container(
           width: double.maxFinite,
-          height: 350,
+          height: MediaQuery.of(context).size.height * 0.36,
           decoration: BoxDecoration(color: mainColor),
           child: Padding(
             padding: const EdgeInsets.only(left: 40, right: 40, top: 40),
@@ -28,8 +30,8 @@ class UserheaderLaporanDetail extends StatelessWidget {
                     SvgPicture.asset(
                       iconHeader,
                       color: secondaryColor,
-                      height: 40,
-                      width: 40,
+                      width: MediaQuery.of(context).size.width * 0.05,
+                      height: MediaQuery.of(context).size.height * 0.05,
                     ),
                     const SizedBox(
                       width: 20,
@@ -38,7 +40,7 @@ class UserheaderLaporanDetail extends StatelessWidget {
                       titlePage,
                       style: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 32,
+                          fontSize: MediaQuery.of(context).size.width * 0.017,
                           fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -55,8 +57,11 @@ class UserheaderLaporanDetail extends StatelessWidget {
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 300, left: 40, right: 40),
+        Padding(
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.28,
+              left: 40,
+              right: 40),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

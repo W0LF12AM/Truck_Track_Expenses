@@ -16,8 +16,8 @@ class Cardlaporanheader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
-      width: 550,
+      height: MediaQuery.of(context).size.height * 0.2,
+      width: MediaQuery.of(context).size.width * 0.28,
       decoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [secondaryColor, secondaryColor, colorGradient]),
@@ -30,23 +30,29 @@ class Cardlaporanheader extends StatelessWidget {
             Text(
               titleCard,
               style: GoogleFonts.poppins(
-                  color: mainColor, fontSize: 30, fontWeight: FontWeight.bold),
+                  color: mainColor,
+                  fontSize: MediaQuery.of(context).size.width * 0.018,
+                  fontWeight: FontWeight.bold),
             ),
-            const SizedBox(
-              height: 10,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 350),
+              padding: EdgeInsets.only(
+                  right: MediaQuery.of(context).size.width * 0.14),
               child: Divider(
                 color: mainColor,
                 thickness: 5,
               ),
             ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
             Text(
               'Rp. $budget',
               style: GoogleFonts.poppins(
                 color: Colors.black,
-                fontSize: 40,
+                fontSize: MediaQuery.of(context).size.width * 0.023,
                 fontWeight: FontWeight.bold,
               ),
             )

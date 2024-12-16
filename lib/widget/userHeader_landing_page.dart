@@ -21,7 +21,7 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
       children: [
         Container(
           width: double.maxFinite,
-          height: 280,
+          height: MediaQuery.sizeOf(context).height * 0.3,
           decoration: const BoxDecoration(color: mainColor),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -95,7 +95,7 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
             Menucard(
               iconMenu: 'assets/report icon.svg',
               titleMenu: 'Laporan \nMobil',
-              description: 'kelola laporan perawatan mobilmu disini',
+              description: 'kelola laporan perawatanmu disini',
               navigate: () {
                 widget.onItemTapped(2);
               },

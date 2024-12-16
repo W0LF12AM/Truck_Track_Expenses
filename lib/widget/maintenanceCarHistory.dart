@@ -4,7 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
 class Maintenancecarhistory extends StatelessWidget {
-  const Maintenancecarhistory({super.key});
+  final String namaOnderdil;
+  final String hargaOnderdil;
+
+  const Maintenancecarhistory(
+      {super.key, required this.namaOnderdil, required this.hargaOnderdil});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +16,7 @@ class Maintenancecarhistory extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Container(
         width: double.maxFinite,
-        height: 98,
+        height: MediaQuery.of(context).size.height * 0.098,
         decoration: BoxDecoration(
             color: secondaryColor,
             border: Border.all(),
@@ -24,25 +28,30 @@ class Maintenancecarhistory extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  SvgPicture.asset('assets/fix icon.svg'),
-                  const SizedBox(
-                    width: 40,
+                  SvgPicture.asset(
+                    'assets/fix icon.svg',
+                    width: MediaQuery.of(context).size.width * 0.03,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.02,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Onderdil',
+                        namaOnderdil,
                         style: GoogleFonts.poppins(
                             color: mainColor,
-                            fontSize: 25,
+                            fontSize:
+                                MediaQuery.of(context).size.height * 0.025,
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Rp. 1.200.000',
+                        'Rp. $hargaOnderdil',
                         style: GoogleFonts.poppins(
                             color: mainColor,
-                            fontSize: 30,
+                            fontSize: MediaQuery.of(context).size.height * 0.03,
                             fontWeight: FontWeight.w500),
                       )
                     ],
@@ -61,7 +70,11 @@ class Maintenancecarhistory extends StatelessWidget {
                   const SizedBox(
                     width: 40,
                   ),
-                  SvgPicture.asset('assets/triple dots icon.svg')
+                  SvgPicture.asset(
+                    'assets/triple dots icon.svg',
+                    width: MediaQuery.sizeOf(context).width * 0.03,
+                    height: MediaQuery.sizeOf(context).height * 0.03,
+                  )
                 ],
               )
             ],
