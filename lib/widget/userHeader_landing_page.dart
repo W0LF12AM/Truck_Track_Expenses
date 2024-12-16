@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:note_app_vtwo/widget/menuCard.dart';
+import 'package:note_app_vtwo/widget/menuCard_download_dan_reset.dart';
 
 class UserheaderLandingPage extends StatefulWidget {
   final Function(int) onItemTapped;
@@ -32,13 +33,13 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Hello, Username',
+                      Text('Good Evening Sir!',
                           style: GoogleFonts.poppins(
                               fontSize: 50,
                               fontWeight: FontWeight.w600,
                               color: Colors.white)),
                       Text(
-                        'Hope you always have a great day sir!',
+                        'Hope you always have a great day',
                         style: GoogleFonts.poppins(
                             color: Colors.white,
                             fontSize: 20,
@@ -79,7 +80,9 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 190, left: 60),
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.21,
+              left: MediaQuery.of(context).size.width * 0.031),
           child: Row(children: [
             Menucard(
               iconMenu: 'assets/car icon.svg',
@@ -105,10 +108,22 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
                 widget.onItemTapped(3);
               },
             ),
-            Menucard(
-              iconMenu: 'assets/expense icon.svg',
-              titleMenu: 'kelola \nPengeluaran',
-              description: 'Tambah pengeluaran mobilmu disini',
+            MenucardDownloadDanReset(
+              iconMenu: 'assets/download icon.svg',
+              titleMenu: 'Unduh\nPencatatan',
+              description: 'Unduh data berdasarkan tahun',
+              buttonColor: mainColor,
+              buttonName: 'Download',
+              navigate: () {
+                widget.onItemTapped(4);
+              },
+            ),
+            MenucardDownloadDanReset(
+              iconMenu: 'assets/reset icon.svg',
+              titleMenu: 'Reset \nData',
+              description: 'Hapus semua data yang ada',
+              buttonColor: expenseColor,
+              buttonName: 'Reset',
               navigate: () {
                 widget.onItemTapped(4);
               },

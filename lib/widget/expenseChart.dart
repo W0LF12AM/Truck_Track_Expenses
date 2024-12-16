@@ -8,10 +8,11 @@ class MultiBarChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60),
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.03),
       child: Container(
         padding: const EdgeInsets.all(20),
-        height: 400,
+        height: MediaQuery.of(context).size.height * 0.4,
         decoration: BoxDecoration(
             color: secondaryColor, borderRadius: BorderRadius.circular(10)),
         child: BarChart(

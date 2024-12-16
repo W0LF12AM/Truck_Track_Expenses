@@ -13,10 +13,11 @@ class _SetbudgetformState extends State<Setbudgetform> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 220),
+      padding: EdgeInsets.symmetric(
+          vertical: MediaQuery.of(context).size.height * 0.2),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.7,
-        height: 400,
+        height: MediaQuery.of(context).size.height * 0.38,
         decoration: BoxDecoration(
             color: secondaryColor, borderRadius: BorderRadius.circular(30)),
         child: Padding(
@@ -24,14 +25,17 @@ class _SetbudgetformState extends State<Setbudgetform> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 70, left: 30, bottom: 20),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.06,
+                    left: 30,
+                    bottom: 20),
                 child: Row(
                   children: [
                     Text(
                       'Set / Update Budget',
                       style: GoogleFonts.poppins(
                           color: mainColor,
-                          fontSize: 35,
+                          fontSize: MediaQuery.of(context).size.width * 0.02,
                           fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -43,7 +47,7 @@ class _SetbudgetformState extends State<Setbudgetform> {
                   children: [
                     Expanded(
                       child: Container(
-                        height: 60,
+                        height: MediaQuery.of(context).size.height * 0.06,
                         decoration: BoxDecoration(color: formColor),
                         child: const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -51,7 +55,7 @@ class _SetbudgetformState extends State<Setbudgetform> {
                             decoration: InputDecoration(
                                 hintText: 'Plat Nomor',
                                 hintStyle: TextStyle(
-                                  fontSize: 30,
+                                  fontSize: 20,
                                 ),
                                 border: InputBorder.none,
                                 suffixIcon: Icon(
@@ -68,7 +72,7 @@ class _SetbudgetformState extends State<Setbudgetform> {
                     ),
                     Expanded(
                       child: Container(
-                        height: 60,
+                        height: MediaQuery.of(context).size.height * 0.06,
                         decoration: BoxDecoration(color: formColor),
                         child: const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -76,7 +80,7 @@ class _SetbudgetformState extends State<Setbudgetform> {
                             decoration: InputDecoration(
                                 hintText: 'Tahun',
                                 hintStyle: TextStyle(
-                                  fontSize: 30,
+                                  fontSize: 20,
                                 ),
                                 border: InputBorder.none,
                                 suffixIcon: Icon(
@@ -100,7 +104,7 @@ class _SetbudgetformState extends State<Setbudgetform> {
                   children: [
                     Expanded(
                       child: Container(
-                        height: 60,
+                        height: MediaQuery.of(context).size.height * 0.06,
                         decoration: BoxDecoration(color: formColor),
                         child: const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -108,7 +112,7 @@ class _SetbudgetformState extends State<Setbudgetform> {
                             decoration: InputDecoration(
                               hintText: 'Budget',
                               hintStyle: TextStyle(
-                                fontSize: 30,
+                                fontSize: 20,
                               ),
                               border: InputBorder.none,
                             ),
@@ -122,8 +126,8 @@ class _SetbudgetformState extends State<Setbudgetform> {
                     GestureDetector(
                       onTap: () {},
                       child: Container(
-                        height: 60,
-                        width: 200,
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        width: MediaQuery.of(context).size.width * 0.12,
                         decoration: BoxDecoration(
                             color: mainColor,
                             borderRadius: BorderRadius.circular(10)),
@@ -131,7 +135,7 @@ class _SetbudgetformState extends State<Setbudgetform> {
                           child: Text(
                             'Simpan',
                             style: GoogleFonts.poppins(
-                                fontSize: 25,
+                                fontSize: 20,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),

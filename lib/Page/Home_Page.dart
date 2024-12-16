@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           // Sidebar
           Container(
-            width: 100, // Lebar sidebar
+            width: MediaQuery.of(context).size.width * 0.05, // Lebar sidebar
             color: secondaryColor,
             child: Padding(
               padding:
@@ -40,8 +40,8 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {},
                     child: SvgPicture.asset(
                       'assets/Note Logo.svg',
-                      width: 60,
-                      height: 60,
+                      width: MediaQuery.of(context).size.width * 0.07,
+                      height: MediaQuery.of(context).size.height * 0.07,
                     ),
                   ),
                   // Menu Items
@@ -57,6 +57,8 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(5)),
                           child: SvgPicture.asset(
                             'assets/home button.svg',
+                            width: MediaQuery.of(context).size.width * 0.04,
+                            height: MediaQuery.of(context).size.height * 0.04,
                             color: _selectedIndex == 0
                                 ? secondaryColor
                                 : mainColor,
@@ -79,8 +81,8 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(5)),
                           child: SvgPicture.asset(
                             'assets/car icon.svg',
-                            height: 40,
-                            width: 40,
+                            width: MediaQuery.of(context).size.width * 0.04,
+                            height: MediaQuery.of(context).size.height * 0.04,
                             color: _selectedIndex == 1
                                 ? secondaryColor
                                 : mainColor,
@@ -97,13 +99,15 @@ class _HomePageState extends State<HomePage> {
                         child: Container(
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                              color: _selectedIndex == 2
+                              color: _selectedIndex == 2 || _selectedIndex == 4
                                   ? mainColor
                                   : secondaryColor,
                               borderRadius: BorderRadius.circular(5)),
                           child: SvgPicture.asset(
                             'assets/report icon.svg',
-                            color: _selectedIndex == 2
+                            width: MediaQuery.of(context).size.width * 0.04,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            color: _selectedIndex == 2 || _selectedIndex == 4
                                 ? secondaryColor
                                 : mainColor,
                           ),
@@ -125,6 +129,8 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(5)),
                           child: SvgPicture.asset(
                             'assets/setting icon.svg',
+                            width: MediaQuery.of(context).size.width * 0.04,
+                            height: MediaQuery.of(context).size.height * 0.04,
                             color: _selectedIndex == 3
                                 ? secondaryColor
                                 : mainColor,
@@ -132,18 +138,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                         onTap: () {
                           _onItemTapped(3);
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      GestureDetector(
-                        child: SvgPicture.asset(
-                          'assets/expense icon.svg',
-                          color: _selectedIndex == 4 ? mainColor : Colors.black,
-                        ),
-                        onTap: () {
-                          _onItemTapped(4);
                         },
                       ),
                     ],
@@ -154,8 +148,8 @@ class _HomePageState extends State<HomePage> {
                     child: SvgPicture.asset(
                       'assets/exit icon.svg',
                       color: mainColor,
-                      width: 30,
-                      height: 30,
+                      width: MediaQuery.of(context).size.width * 0.04,
+                      height: MediaQuery.of(context).size.height * 0.04,
                     ),
                   ),
                 ],
@@ -170,9 +164,9 @@ class _HomePageState extends State<HomePage> {
               onItemTapped: _onItemTapped,
             ),
             const KelolaMobilPage(),
-            const LaporanPermobilMenuPage(),
+            LaporanPermobilMenuPage(onItemTapped: _onItemTapped),
             const SetBudgetPage(),
-            const LaporanDetilPermobilPage(),
+            LaporanDetilPermobilPage(onItemTapped: _onItemTapped)
           ])),
         ],
       ),

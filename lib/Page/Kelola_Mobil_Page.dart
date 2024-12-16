@@ -18,49 +18,82 @@ class KelolaMobilPage extends StatelessWidget {
               children: [
                 UserheaderCustom(
                   iconHeader: 'assets/car icon.svg',
+                  titleHeader: 'Kelola Mobil',
                 ),
-                Entitasmobil(
-                  iconAction: 'assets/delete icon.svg',
-                  navigate: () {},
-                  number: 1,
-                  platnomor: 'F 1234 CD',
-                ),
-                Entitasmobil(
-                  iconAction: 'assets/delete icon.svg',
-                  navigate: () {},
-                  number: 1,
-                  platnomor: 'F 1234 CD',
-                ),
-                Entitasmobil(
-                  iconAction: 'assets/delete icon.svg',
-                  navigate: () {},
-                  number: 1,
-                  platnomor: 'F 1234 CD',
-                ),
-                Entitasmobil(
-                  iconAction: 'assets/delete icon.svg',
-                  navigate: () {},
-                  number: 1,
-                  platnomor: 'F 1234 CD',
-                ),
-                Entitasmobil(
-                  iconAction: 'assets/delete icon.svg',
-                  navigate: () {},
-                  number: 1,
-                  platnomor: 'F 1234 CD',
-                ),
-                Entitasmobil(
-                  iconAction: 'assets/delete icon.svg',
-                  navigate: () {},
-                  number: 1,
-                  platnomor: 'F 1234 CD',
-                ),
-                Entitasmobil(
-                  iconAction: 'assets/delete icon.svg',
-                  navigate: () {},
-                  number: 1,
-                  platnomor: 'F 1234 CD',
-                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Entitasmobil(
+                          iconAction: 'assets/delete icon.svg',
+                          navigate: () {},
+                          number: 1,
+                          platnomor: 'F 1234 CD',
+                        ),
+                        Entitasmobil(
+                          iconAction: 'assets/delete icon.svg',
+                          navigate: () {},
+                          number: 1,
+                          platnomor: 'F 1234 CD',
+                        ),
+                        Entitasmobil(
+                          iconAction: 'assets/delete icon.svg',
+                          navigate: () {},
+                          number: 1,
+                          platnomor: 'F 1234 CD',
+                        ),
+                        Entitasmobil(
+                          iconAction: 'assets/delete icon.svg',
+                          navigate: () {},
+                          number: 1,
+                          platnomor: 'F 1234 CD',
+                        ),
+                        Entitasmobil(
+                          iconAction: 'assets/delete icon.svg',
+                          navigate: () {},
+                          number: 1,
+                          platnomor: 'F 1234 CD',
+                        ),
+                        Entitasmobil(
+                          iconAction: 'assets/delete icon.svg',
+                          navigate: () {},
+                          number: 1,
+                          platnomor: 'F 1234 CD',
+                        ),
+                        Entitasmobil(
+                          iconAction: 'assets/delete icon.svg',
+                          navigate: () {},
+                          number: 1,
+                          platnomor: 'F 1234 CD',
+                        ),
+                        Entitasmobil(
+                          iconAction: 'assets/delete icon.svg',
+                          navigate: () {},
+                          number: 1,
+                          platnomor: 'F 1234 CD',
+                        ),
+                        Entitasmobil(
+                          iconAction: 'assets/delete icon.svg',
+                          navigate: () {},
+                          number: 1,
+                          platnomor: 'F 1234 CD',
+                        ),
+                        Entitasmobil(
+                          iconAction: 'assets/delete icon.svg',
+                          navigate: () {},
+                          number: 1,
+                          platnomor: 'F 1234 CD',
+                        ),
+                        Entitasmobil(
+                          iconAction: 'assets/delete icon.svg',
+                          navigate: () {},
+                          number: 1,
+                          platnomor: 'F 1234 CD',
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           )

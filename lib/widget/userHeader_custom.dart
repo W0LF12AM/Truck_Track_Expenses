@@ -4,9 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
 class UserheaderCustom extends StatefulWidget {
-  const UserheaderCustom({super.key, required this.iconHeader});
-
   final String iconHeader;
+  final String titleHeader;
+  const UserheaderCustom(
+      {super.key, required this.iconHeader, required this.titleHeader});
 
   @override
   State<UserheaderCustom> createState() => _UserheaderCustomState();
@@ -17,7 +18,7 @@ class _UserheaderCustomState extends State<UserheaderCustom> {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      height: 130,
+      height: MediaQuery.of(context).size.height * 0.13,
       decoration: BoxDecoration(color: mainColor),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -29,24 +30,24 @@ class _UserheaderCustomState extends State<UserheaderCustom> {
                 SvgPicture.asset(
                   widget.iconHeader,
                   color: secondaryColor,
-                  width: 50,
-                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.05,
+                  height: MediaQuery.of(context).size.height * 0.05,
                 ),
                 const SizedBox(
                   width: 20,
                 ),
                 Text(
-                  'Kelola Mobil',
+                  widget.titleHeader,
                   style: GoogleFonts.poppins(
                       color: Colors.white,
-                      fontSize: 32,
+                      fontSize: MediaQuery.of(context).size.width * 0.017,
                       fontWeight: FontWeight.bold),
                 )
               ],
             ),
             Container(
-              width: 300,
-              height: 50,
+              width: MediaQuery.of(context).size.width * 0.17,
+              height: MediaQuery.of(context).size.height * 0.05,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: const Padding(

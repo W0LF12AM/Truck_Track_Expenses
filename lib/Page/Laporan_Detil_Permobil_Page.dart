@@ -4,7 +4,9 @@ import 'package:note_app_vtwo/widget/maintenanceCarHistory.dart';
 import 'package:note_app_vtwo/widget/userHeader_laporan_detail.dart';
 
 class LaporanDetilPermobilPage extends StatelessWidget {
-  const LaporanDetilPermobilPage({super.key});
+  final Function(int) onItemTapped;
+
+  const LaporanDetilPermobilPage({super.key, required this.onItemTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,6 @@ class LaporanDetilPermobilPage extends StatelessWidget {
       backgroundColor: bgColor,
       body: Row(
         children: [
-       
           Expanded(
             child: Column(
               children: [

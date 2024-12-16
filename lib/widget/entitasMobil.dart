@@ -21,7 +21,7 @@ class Entitasmobil extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 15, left: 30, right: 30),
       child: Container(
-        height: 98,
+        height: MediaQuery.of(context).size.height * 0.09,
         width: double.maxFinite,
         decoration: BoxDecoration(
             color: secondaryColor, borderRadius: BorderRadius.circular(15)),
@@ -35,8 +35,8 @@ class Entitasmobil extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    width: 50,
-                    height: 60,
+                    width: MediaQuery.of(context).size.width * 0.027,
+                    height: MediaQuery.of(context).size.height * 0.055,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: mainColor,
@@ -47,7 +47,8 @@ class Entitasmobil extends StatelessWidget {
                       child: Text(number.toString(),
                           style: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 25,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.012,
                               fontWeight: FontWeight.w600)),
                     ),
                   ),
@@ -60,18 +61,20 @@ class Entitasmobil extends StatelessWidget {
                     platnomor,
                     style: GoogleFonts.poppins(
                         color: mainColor,
-                        fontSize: 30,
+                        fontSize: MediaQuery.of(context).size.width * 0.015,
                         fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
               Container(
                   padding: EdgeInsets.all(8),
-                  width: 40,
-                  height: 40,
+                  width: MediaQuery.of(context).size.width * 0.03,
+                  height: MediaQuery.of(context).size.height * 0.05,
                   decoration: BoxDecoration(
                       color: mainColor, borderRadius: BorderRadius.circular(5)),
-                  child: SvgPicture.asset('assets/delete icon.svg'))
+                  child: SvgPicture.asset(
+                    'assets/delete icon.svg',
+                  ))
             ],
           ),
         ),
