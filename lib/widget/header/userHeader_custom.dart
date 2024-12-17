@@ -50,16 +50,16 @@ class _UserheaderCustomState extends State<UserheaderCustom> {
               height: MediaQuery.of(context).size.height * 0.05,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Search',
-                        hintStyle: TextStyle(fontSize: 20),
-                        prefixIcon: Icon(Icons.search)),
-                  ),
+                child: TextField(
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w700, fontSize: 20),
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Search',
+                      hintStyle: TextStyle(fontSize: 20),
+                      prefixIcon: Icon(Icons.search)),
                 ),
               ),
             )

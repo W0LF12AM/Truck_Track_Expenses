@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note_app_vtwo/Page/Kelola_Mobil_Page.dart';
@@ -37,7 +39,9 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      _onItemTapped(0);
+                    },
                     child: SvgPicture.asset(
                       'assets/Note Logo.svg',
                       width: MediaQuery.of(context).size.width * 0.07,
@@ -144,7 +148,9 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      exit(0);
+                    },
                     child: SvgPicture.asset(
                       'assets/exit icon.svg',
                       color: mainColor,

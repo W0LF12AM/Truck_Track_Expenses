@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
+import 'package:note_app_vtwo/widget/dialog/dilaogPeringatanHapusData.dart';
 
-import 'package:note_app_vtwo/widget/entitasMobil.dart';
-import 'package:note_app_vtwo/widget/tambahMobilDialog.dart';
-import 'package:note_app_vtwo/widget/userHeader_custom.dart';
+import 'package:note_app_vtwo/widget/entity/entitasMobil.dart';
+import 'package:note_app_vtwo/widget/add%20form/tambahMobilDialog.dart';
+import 'package:note_app_vtwo/widget/header/userHeader_custom.dart';
 
 class KelolaMobilPage extends StatelessWidget {
   const KelolaMobilPage({super.key});
@@ -31,28 +32,17 @@ class KelolaMobilPage extends StatelessWidget {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    title: Row(
-                                      // children: [
-                                      //   Icon(
-                                      //     Icons.cancel,
-                                      //     color: expenseColor,
-                                      //     size: 40,
-                                      //   ),
-                                      //   SizedBox(
-                                      //     width: 10,
-                                      //   ),
-                                      //   Text('Hapus Entitas')
-                                      // ],
-                                    ),
+                                  return Dialog(
+                                    backgroundColor: Colors.transparent,
+                                    child: Dilaogperingatanhapusdata(),
                                   );
                                 });
                           },
                           number: 1,
                           platnomor: 'F 1234 CD',
+                        ),
+                        SizedBox(
+                          height: 300,
                         ),
                       ],
                     ),
@@ -63,21 +53,20 @@ class KelolaMobilPage extends StatelessWidget {
           )
         ],
       ),
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-            border: Border.all(width: 2),
-            borderRadius: BorderRadius.circular(15)),
-        width: 70,
-        height: 70,
-        child: FloatingActionButton(
-          backgroundColor: secondaryColor,
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Tambahmobildialog();
-                });
-          },
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Tambahmobildialog();
+              });
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(width: 2),
+              borderRadius: BorderRadius.circular(15)),
+          width: 70,
+          height: 70,
           child: Container(
             child: Icon(
               Icons.add,

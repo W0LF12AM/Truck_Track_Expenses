@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
-import 'package:note_app_vtwo/widget/cardLaporanHeader.dart';
-import 'package:note_app_vtwo/widget/headerLaporanMobil.dart';
+import 'package:note_app_vtwo/widget/card/cardLaporanHeader.dart';
+import 'package:note_app_vtwo/widget/header/headerLaporanMobil.dart';
 
 class UserheaderLaporanDetail extends StatelessWidget {
   const UserheaderLaporanDetail(

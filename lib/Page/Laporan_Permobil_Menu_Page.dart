@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
-import 'package:note_app_vtwo/widget/entitasLaporanMobil.dart';
-import 'package:note_app_vtwo/widget/userHeader_custom.dart';
+import 'package:note_app_vtwo/widget/entity/entitasLaporanMobil.dart';
+import 'package:note_app_vtwo/widget/header/userHeader_custom.dart';
 
 class LaporanPermobilMenuPage extends StatelessWidget {
   final Function(int) onItemTapped;

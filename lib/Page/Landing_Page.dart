@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
-import 'package:note_app_vtwo/widget/expenseChart.dart';
-import 'package:note_app_vtwo/widget/userHeader_landing_page.dart';
+import 'package:note_app_vtwo/widget/other/expenseChart.dart';
+import 'package:note_app_vtwo/widget/header/userHeader_landing_page.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({super.key, required this.onItemTapped});

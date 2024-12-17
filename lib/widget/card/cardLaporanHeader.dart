@@ -16,7 +16,7 @@ class Cardlaporanheader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.2,
+      height: MediaQuery.of(context).size.height * 0.22,
       width: MediaQuery.of(context).size.width * 0.28,
       decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -35,7 +35,7 @@ class Cardlaporanheader extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
+              height: MediaQuery.of(context).size.height * 0.005,
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -46,7 +46,7 @@ class Cardlaporanheader extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
+              height: MediaQuery.of(context).size.height * 0.005,
             ),
             Text(
               'Rp. $budget',

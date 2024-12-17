@@ -13,7 +13,7 @@ class UserheaderCustomWithoutSearchbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      height: 130,
+      height: MediaQuery.of(context).size.height * 0.13,
       decoration: BoxDecoration(color: mainColor),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),

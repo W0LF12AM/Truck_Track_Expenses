@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
-import 'package:note_app_vtwo/widget/menuCard.dart';
-import 'package:note_app_vtwo/widget/menuCard_download_dan_reset.dart';
+import 'package:note_app_vtwo/widget/dialog/dialogDownloadData.dart';
+import 'package:note_app_vtwo/widget/dialog/dialogResetData.dart';
+import 'package:note_app_vtwo/widget/card/menuCard.dart';
+import 'package:note_app_vtwo/widget/card/menuCard_download_dan_reset.dart';
 
 class UserheaderLandingPage extends StatefulWidget {
   final Function(int) onItemTapped;
@@ -35,14 +37,15 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
                     children: [
                       Text('Good Evening Sir!',
                           style: GoogleFonts.poppins(
-                              fontSize: 50,
+                              fontSize:
+                                  MediaQuery.sizeOf(context).height * 0.05,
                               fontWeight: FontWeight.w600,
                               color: Colors.white)),
                       Text(
                         'Hope you always have a great day',
                         style: GoogleFonts.poppins(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: MediaQuery.sizeOf(context).height * 0.02,
                             fontWeight: FontWeight.w400),
                       )
                     ],
@@ -51,24 +54,29 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
                     children: [
                       Row(
                         children: [
-                          SvgPicture.asset('assets/calendar icon.svg'),
-                          const SizedBox(
-                            width: 20,
+                          SvgPicture.asset(
+                            'assets/calendar icon.svg',
+                            width: MediaQuery.sizeOf(context).width * 0.03,
+                            height: MediaQuery.sizeOf(context).height * 0.03,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.sizeOf(context).width * 0.015,
                           ),
                           Text(
                             'DD/MM/YYYY',
                             style: GoogleFonts.poppins(
                                 color: Colors.white,
-                                fontSize: 17,
+                                fontSize:
+                                    MediaQuery.sizeOf(context).height * 0.02,
                                 fontWeight: FontWeight.normal),
                           ),
-                          const SizedBox(
-                            width: 30,
+                          SizedBox(
+                            width: MediaQuery.sizeOf(context).width * 0.02,
                           ),
                           SvgPicture.asset(
                             'assets/profile icon.svg',
-                            width: 50,
-                            height: 50,
+                            width: MediaQuery.sizeOf(context).width * 0.05,
+                            height: MediaQuery.sizeOf(context).height * 0.05,
                           )
                         ],
                       ),
@@ -115,7 +123,11 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
               buttonColor: mainColor,
               buttonName: 'Download',
               navigate: () {
-                widget.onItemTapped(4);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialogdownloaddata();
+                    });
               },
             ),
             MenucardDownloadDanReset(
@@ -125,7 +137,14 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
               buttonColor: expenseColor,
               buttonName: 'Reset',
               navigate: () {
-                widget.onItemTapped(4);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        backgroundColor: Colors.transparent,
+                        child: Dialogresetdata(),
+                      );
+                    });
               },
             ),
           ]),

@@ -3,18 +3,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
-class Menucard extends StatelessWidget {
+class MenucardDownloadDanReset extends StatelessWidget {
   final String iconMenu;
   final VoidCallback navigate;
   final String description;
   final String titleMenu;
+  final String buttonName;
+  final Color? buttonColor;
 
-  const Menucard(
+  const MenucardDownloadDanReset(
       {super.key,
       required this.iconMenu,
       required this.navigate,
       required this.description,
-      required this.titleMenu});
+      required this.titleMenu,
+      required this.buttonName,
+      required this.buttonColor});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,7 @@ class Menucard extends StatelessWidget {
           decoration: BoxDecoration(
               color: secondaryColor, borderRadius: BorderRadius.circular(10)),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(15),
             child: Column(
               children: [
                 //icon
@@ -64,8 +68,8 @@ class Menucard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 5,
+                SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.001,
                 ),
                 //divider
                 const Padding(
@@ -78,7 +82,7 @@ class Menucard extends StatelessWidget {
 
                 //keterangan
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.008,
+                  height: MediaQuery.of(context).size.height * 0.002,
                 ),
                 Text(
                   description,
@@ -89,16 +93,28 @@ class Menucard extends StatelessWidget {
                 ),
                 //arrow button
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.005,
+                  height: MediaQuery.of(context).size.height * 0.001,
                 ),
                 GestureDetector(
                   onTap: navigate,
                   child: Align(
                       alignment: Alignment.centerRight,
-                      child: SvgPicture.asset(
-                        'assets/arrow icon.svg',
-                        width: MediaQuery.of(context).size.width * 0.0265,
-                        height: MediaQuery.of(context).size.width * 0.0265,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.07,
+                        decoration: BoxDecoration(
+                            color: buttonColor,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Center(
+                          child: Text(
+                            buttonName,
+                            style: GoogleFonts.poppins(
+                                color: secondaryColor,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.01,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
                       )),
                 )
               ],
@@ -106,7 +122,7 @@ class Menucard extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.02,
+          width: MediaQuery.of(context).size.width * 0.03,
         )
       ],
     );

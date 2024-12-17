@@ -3,14 +3,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
-class Tambahmobildialog extends StatefulWidget {
-  const Tambahmobildialog({super.key});
+class Tambahlaporanpengeluaran extends StatefulWidget {
+  const Tambahlaporanpengeluaran({super.key});
 
   @override
-  State<Tambahmobildialog> createState() => _TambahmobildialogState();
+  State<Tambahlaporanpengeluaran> createState() =>
+      _TambahlaporanpengeluaranState();
 }
 
-class _TambahmobildialogState extends State<Tambahmobildialog> {
+class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -18,7 +19,7 @@ class _TambahmobildialogState extends State<Tambahmobildialog> {
       backgroundColor: secondaryColor,
       child: Container(
         width: MediaQuery.sizeOf(context).width * 0.45,
-        height: MediaQuery.sizeOf(context).height * 0.29,
+        height: MediaQuery.sizeOf(context).height * 0.45,
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -26,7 +27,7 @@ class _TambahmobildialogState extends State<Tambahmobildialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Tambah Mobil',
+                'Tambah Data',
                 style: GoogleFonts.poppins(
                     color: mainColor,
                     fontSize: MediaQuery.sizeOf(context).width * 0.017,
@@ -55,7 +56,47 @@ class _TambahmobildialogState extends State<Tambahmobildialog> {
                       fontWeight: FontWeight.bold, fontSize: 20),
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Plat Nomor',
+                    hintText: 'Onderdil',
+                    contentPadding: EdgeInsets.only(left: 10),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.02,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: formColor,
+                ),
+                height: MediaQuery.sizeOf(context).height * 0.06,
+                child: TextField(
+                  textAlign: TextAlign.start,
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold, fontSize: 20),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Harga',
+                    contentPadding: EdgeInsets.only(left: 10),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.02,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: formColor,
+                ),
+                height: MediaQuery.sizeOf(context).height * 0.06,
+                child: TextField(
+                  textAlign: TextAlign.start,
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold, fontSize: 20),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Tanggal',
                     contentPadding: EdgeInsets.only(left: 10),
                   ),
                 ),
@@ -81,6 +122,7 @@ class _TambahmobildialogState extends State<Tambahmobildialog> {
                         child: SvgPicture.asset(
                           'assets/cancel icon.svg',
                           color: secondaryColor,
+                          width: MediaQuery.sizeOf(context).width * 0.03,
                         ),
                       ),
                     ),
@@ -99,7 +141,7 @@ class _TambahmobildialogState extends State<Tambahmobildialog> {
                       child: Icon(
                         Icons.check,
                         color: secondaryColor,
-                        size: 40,
+                        size: MediaQuery.sizeOf(context).width * 0.02,
                       ),
                     ),
                   )
