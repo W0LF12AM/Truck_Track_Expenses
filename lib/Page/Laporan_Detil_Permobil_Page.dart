@@ -22,23 +22,23 @@ class LaporanDetilPermobilPage extends StatefulWidget {
 }
 
 class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
-  final Databasehelper _databasehelper = Databasehelper();
+  final DatabaseHelper _databasehelper = DatabaseHelper();
   Truck? _selectedTruck;
 
   @override
   void initState() {
     super.initState();
-    _loadTruckData();
+    _loadTruckData(widget.truckId);
   }
 
-  Future<void> _loadTruckData() async {
+  Future<void> _loadTruckData(int id) async {
     try {
-      _selectedTruck = await _databasehelper.getTruckById(widget.truckId);
+      _selectedTruck = await _databasehelper.getTruckById(id);
       print('truk data berhasil di load : $_selectedTruck');
     } catch (e) {
       print('gagal cuy');
     }
-    
+
     setState(() {});
   }
 

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:note_app_vtwo/data/databaseHelper.dart';
 import 'package:note_app_vtwo/data/model.dart';
+import 'package:note_app_vtwo/function/provider.dart';
 
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:note_app_vtwo/widget/entity/entitasMobil.dart';
 import 'package:note_app_vtwo/widget/add%20form/tambahMobilDialog.dart';
 import 'package:note_app_vtwo/widget/header/userHeader_custom.dart';
+import 'package:provider/provider.dart';
 
 class KelolaMobilPage extends StatefulWidget {
   const KelolaMobilPage({super.key});
@@ -21,29 +22,35 @@ class _KelolaMobilPageState extends State<KelolaMobilPage> {
   List<Truck> _filteredTrucks = [];
   String _searchQuery = '';
 
-  final Databasehelper _databasehelper = Databasehelper();
+
 
   @override
   void initState() {
     super.initState();
-    _loadTrucks();
+    Provider.of<TruckProvider>(context, listen: false).loadTrucks();
   }
 
-  Future<void> _loadTrucks() async {
-    List<Truck> trucks = await _databasehelper.getTrucks();
-    setState(() {
-      _trucks = trucks;
-      _filteredTrucks = trucks;
-    });
-  }
+  // Future<void> _loadTrucks() async {
+  //   try {
+  //     List<Truck> trucks = await _databasehelper.getTrucks();
+  //     setState(() {
+  //       _trucks = trucks;
+  //       _filteredTrucks = trucks;
+  //     });
+  //     print('Trucks loaded: $_trucks');
+  //   } catch (e) {
+  //     print('Error loading trucks: $e');
+  //   }
+  // }
 
   void _filterTrucks(String query) {
+    final truckProvider = Provider.of<TruckProvider>(context, listen: false);
     setState(() {
       _searchQuery = query;
       if (query.isEmpty) {
-        _filteredTrucks = _trucks;
+        _filteredTrucks = truckProvider.trucks;
       }
-      _filteredTrucks = _trucks
+      _filteredTrucks = truckProvider.trucks
           .where((truck) =>
               truck.platNomor.toLowerCase().contains(query.toLowerCase()))
           .toList();
@@ -51,28 +58,27 @@ class _KelolaMobilPageState extends State<KelolaMobilPage> {
   }
 
   void _addTruck(String platNomor) async {
-    Truck newTruck =
-        Truck(id: 0, platNomor: platNomor, number: _trucks.length + 1);
-    await _databasehelper.tambahTruck(newTruck);
-    _loadTrucks();
+    final truckProvider = Provider.of<TruckProvider>(context, listen: false);
+    Truck newTruck = Truck(
+        id: 0,
+        platNomor: platNomor,
+        number: _trucks.length + 1,
+        budgetTahunan: 0);
+    truckProvider.addTruck(newTruck);
   }
 
   void _deleteTruck(int id) async {
+    final truckProvider = Provider.of<TruckProvider>(context, listen: false);
     print('truk dengan id : $id dihapus');
-    await _databasehelper.deleteTruck(id);
-    List<Truck> sisaEntitas = await _databasehelper.getTrucks();
-
-    for (int i = 0; i < sisaEntitas.length; i++) {
-      Truck truck = sisaEntitas[i];
-      truck.number = i + 1;
-      await _databasehelper.updateTruck(truck);
-    }
-
-    _loadTrucks();
+    truckProvider.deleteTruck(id);
   }
 
   @override
   Widget build(BuildContext context) {
+    final truckProvider = Provider.of<TruckProvider>(context);
+    _filteredTrucks = truckProvider.trucks.where((truck) {
+      return truck.platNomor.toLowerCase().contains(_searchQuery.toLowerCase());
+    }).toList();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return Scaffold(
       backgroundColor: bgColor,

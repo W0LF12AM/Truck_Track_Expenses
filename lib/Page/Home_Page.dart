@@ -17,19 +17,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  int? _selectedTruckId;
+  // int? _selectedTruckId;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    if (index == 4) {
-      // Misalnya, jika truckId adalah 2
-      _selectedTruckId = 2; // Ganti dengan truckId yang sesuai
-      setState(() {
-        _selectedIndex = 4; // Ubah indeks untuk menampilkan halaman detail
-      });
-    }
+    // if (index == 4) {
+    //   // Misalnya, jika truckId adalah 2
+    //   _selectedTruckId = 2; // Ganti dengan truckId yang sesuai
+    //   setState(() {
+    //     _selectedIndex = 4; // Ubah indeks untuk menampilkan halaman detail
+    //   });
+    // }
   }
 
   @override
