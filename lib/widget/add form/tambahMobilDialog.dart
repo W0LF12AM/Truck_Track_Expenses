@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
 class Tambahmobildialog extends StatefulWidget {
-  const Tambahmobildialog({super.key});
+  final Function(String) onAddTruck;
+  const Tambahmobildialog({super.key, required this.onAddTruck});
 
   @override
   State<Tambahmobildialog> createState() => _TambahmobildialogState();
@@ -13,6 +14,7 @@ class Tambahmobildialog extends StatefulWidget {
 class _TambahmobildialogState extends State<Tambahmobildialog> {
   @override
   Widget build(BuildContext context) {
+    String platNomor = '';
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       backgroundColor: secondaryColor,
@@ -58,6 +60,9 @@ class _TambahmobildialogState extends State<Tambahmobildialog> {
                     hintText: 'Plat Nomor',
                     contentPadding: EdgeInsets.only(left: 10),
                   ),
+                  onChanged: (value) {
+                    platNomor = value;
+                  },
                 ),
               ),
               SizedBox(
@@ -90,7 +95,10 @@ class _TambahmobildialogState extends State<Tambahmobildialog> {
                     width: MediaQuery.sizeOf(context).width * 0.005,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      widget.onAddTruck(platNomor);
+                      Navigator.pop(context);
+                    },
                     child: Container(
                       width: MediaQuery.sizeOf(context).width * 0.048,
                       height: MediaQuery.sizeOf(context).height * 0.048,

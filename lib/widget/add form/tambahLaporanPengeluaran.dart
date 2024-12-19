@@ -19,7 +19,7 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
       backgroundColor: secondaryColor,
       child: Container(
         width: MediaQuery.sizeOf(context).width * 0.45,
-        height: MediaQuery.sizeOf(context).height * 0.45,
+        height: MediaQuery.sizeOf(context).height * 0.47,
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -118,11 +118,11 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
                           color: mainColor,
                           borderRadius: BorderRadius.circular(5)),
                       child: Padding(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(
+                            MediaQuery.sizeOf(context).width * 0.006),
                         child: SvgPicture.asset(
                           'assets/cancel icon.svg',
                           color: secondaryColor,
-                          width: MediaQuery.sizeOf(context).width * 0.03,
                         ),
                       ),
                     ),

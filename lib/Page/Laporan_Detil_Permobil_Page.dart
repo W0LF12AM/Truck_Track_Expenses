@@ -1,26 +1,63 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:note_app_vtwo/data/databaseHelper.dart';
+import 'package:note_app_vtwo/data/model.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:note_app_vtwo/widget/entity/maintenanceCarHistory.dart';
 import 'package:note_app_vtwo/widget/add%20form/tambahLaporanPengeluaran.dart';
 import 'package:note_app_vtwo/widget/header/userHeader_laporan_detail.dart';
 
-class LaporanDetilPermobilPage extends StatelessWidget {
+class LaporanDetilPermobilPage extends StatefulWidget {
   final Function(int) onItemTapped;
+  final int truckId;
 
-  const LaporanDetilPermobilPage({super.key, required this.onItemTapped});
+  LaporanDetilPermobilPage(
+      {super.key, required this.onItemTapped, required this.truckId});
+
+  @override
+  State<LaporanDetilPermobilPage> createState() =>
+      _LaporanDetilPermobilPageState();
+}
+
+class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
+  final Databasehelper _databasehelper = Databasehelper();
+  Truck? _selectedTruck;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTruckData();
+  }
+
+  Future<void> _loadTruckData() async {
+    try {
+      _selectedTruck = await _databasehelper.getTruckById(widget.truckId);
+      print('truk data berhasil di load : $_selectedTruck');
+    } catch (e) {
+      print('gagal cuy');
+    }
+    
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return Scaffold(
       backgroundColor: bgColor,
-      body: const Row(
+      body: Row(
         children: [
           Expanded(
             child: Column(
               children: [
                 UserheaderLaporanDetail(
-                    titlePage: 'Laporan Detail',
-                    iconHeader: 'assets/report icon.svg'),
+                  titlePage: 'Laporan Detail',
+                  iconHeader: 'assets/report icon.svg',
+                  nomor: _selectedTruck?.number ?? 0,
+                  platNomor: _selectedTruck?.platNomor ?? 'Loading...',
+                ),
                 SizedBox(
                   height: 20,
                 ),

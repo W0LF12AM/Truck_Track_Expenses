@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
@@ -10,6 +11,7 @@ class SetBudgetPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return const Scaffold(
       backgroundColor: bgColor,
       body: Row(

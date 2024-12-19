@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note_app_vtwo/Page/Kelola_Mobil_Page.dart';
 import 'package:note_app_vtwo/Page/Landing_Page.dart';
@@ -16,11 +17,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  int? _selectedTruckId;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    if (index == 4) {
+      // Misalnya, jika truckId adalah 2
+      _selectedTruckId = 2; // Ganti dengan truckId yang sesuai
+      setState(() {
+        _selectedIndex = 4; // Ubah indeks untuk menampilkan halaman detail
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    super.initState();
   }
 
   @override
@@ -172,7 +187,10 @@ class _HomePageState extends State<HomePage> {
             const KelolaMobilPage(),
             LaporanPermobilMenuPage(onItemTapped: _onItemTapped),
             const SetBudgetPage(),
-            LaporanDetilPermobilPage(onItemTapped: _onItemTapped)
+            LaporanDetilPermobilPage(
+              onItemTapped: _onItemTapped,
+              truckId: 2,
+            )
           ])),
         ],
       ),

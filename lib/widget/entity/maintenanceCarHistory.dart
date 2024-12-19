@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:note_app_vtwo/widget/dialog/dilaogEditDataLaporan.dart';
-import 'package:note_app_vtwo/widget/dialog/dilaogPeringatanHapusData.dart';
 
 class Maintenancecarhistory extends StatelessWidget {
   final String namaOnderdil;
@@ -118,7 +117,7 @@ class Maintenancecarhistory extends StatelessWidget {
                                     builder: (BuildContext context) {
                                       return Dialog(
                                         backgroundColor: Colors.transparent,
-                                        child: Dilaogperingatanhapusdata(),
+                                        // child: Dilaogperingatanhapusdata(),
                                       );
                                     });
                               },

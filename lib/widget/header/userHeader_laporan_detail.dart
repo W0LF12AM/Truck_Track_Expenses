@@ -7,12 +7,25 @@ import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:note_app_vtwo/widget/card/cardLaporanHeader.dart';
 import 'package:note_app_vtwo/widget/header/headerLaporanMobil.dart';
 
-class UserheaderLaporanDetail extends StatelessWidget {
-  const UserheaderLaporanDetail(
-      {super.key, required this.titlePage, required this.iconHeader});
+class UserheaderLaporanDetail extends StatefulWidget {
+  UserheaderLaporanDetail(
+      {super.key,
+      required this.titlePage,
+      required this.iconHeader,
+      required this.nomor,
+      required this.platNomor});
 
   final String titlePage;
   final String iconHeader;
+  int nomor;
+  final String platNomor;
+
+  @override
+  State<UserheaderLaporanDetail> createState() =>
+      _UserheaderLaporanDetailState();
+}
+
+class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -28,7 +41,7 @@ class UserheaderLaporanDetail extends StatelessWidget {
                 Row(
                   children: [
                     SvgPicture.asset(
-                      iconHeader,
+                      widget.iconHeader,
                       color: secondaryColor,
                       width: MediaQuery.of(context).size.width * 0.05,
                       height: MediaQuery.of(context).size.height * 0.05,
@@ -37,7 +50,7 @@ class UserheaderLaporanDetail extends StatelessWidget {
                       width: 20,
                     ),
                     Text(
-                      titlePage,
+                      widget.titlePage,
                       style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: MediaQuery.of(context).size.width * 0.017,
@@ -49,8 +62,8 @@ class UserheaderLaporanDetail extends StatelessWidget {
                   height: 30,
                 ),
                 Headerlaporanmobil(
-                    number: 1,
-                    platnomor: 'F 1234 ED',
+                    number: widget.nomor,
+                    platnomor: widget.platNomor,
                     navigate: () {},
                     textButton: 'Download')
               ],

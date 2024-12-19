@@ -6,8 +6,12 @@ import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 class UserheaderCustom extends StatefulWidget {
   final String iconHeader;
   final String titleHeader;
+  final Function(String)? onSearch;
   const UserheaderCustom(
-      {super.key, required this.iconHeader, required this.titleHeader});
+      {super.key,
+      required this.iconHeader,
+      required this.titleHeader,
+      required this.onSearch});
 
   @override
   State<UserheaderCustom> createState() => _UserheaderCustomState();
@@ -53,6 +57,7 @@ class _UserheaderCustomState extends State<UserheaderCustom> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: TextField(
+                  onChanged: widget.onSearch,
                   style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w700, fontSize: 20),
                   decoration: InputDecoration(
