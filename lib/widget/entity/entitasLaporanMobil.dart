@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_app_vtwo/data/model.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
 class EntitasLaporanMobil extends StatelessWidget {
@@ -10,13 +11,14 @@ class EntitasLaporanMobil extends StatelessWidget {
   final String sisaBudget;
   final String tanggalInput;
 
-  const EntitasLaporanMobil(
-      {super.key,
-      required this.number,
-      required this.platnomor,
-      required this.navigate,
-      required this.sisaBudget,
-      required this.tanggalInput});
+  const EntitasLaporanMobil({
+    super.key,
+    required this.number,
+    required this.platnomor,
+    required this.navigate,
+    required this.sisaBudget,
+    required this.tanggalInput,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -3,14 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
 class Headerlaporanmobil extends StatelessWidget {
-  final int number;
+
   final String platnomor;
   final VoidCallback navigate;
   final String textButton;
 
   const Headerlaporanmobil(
       {super.key,
-      required this.number,
       required this.platnomor,
       required this.navigate,
       required this.textButton});
@@ -45,7 +44,7 @@ class Headerlaporanmobil extends StatelessWidget {
 
                     //Number
                     child: Center(
-                      child: Text(number.toString(),
+                      child: Text('-',
                           style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize:

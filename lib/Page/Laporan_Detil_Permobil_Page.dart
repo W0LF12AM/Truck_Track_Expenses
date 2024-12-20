@@ -12,9 +12,13 @@ import 'package:note_app_vtwo/widget/header/userHeader_laporan_detail.dart';
 class LaporanDetilPermobilPage extends StatefulWidget {
   final Function(int) onItemTapped;
   final int truckId;
+  final Function goBack;
 
   LaporanDetilPermobilPage(
-      {super.key, required this.onItemTapped, required this.truckId});
+      {super.key,
+      required this.onItemTapped,
+      required this.truckId,
+      required this.goBack});
 
   @override
   State<LaporanDetilPermobilPage> createState() =>
@@ -23,18 +27,35 @@ class LaporanDetilPermobilPage extends StatefulWidget {
 
 class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
   final DatabaseHelper _databasehelper = DatabaseHelper();
-  Truck? _selectedTruck;
+  Truck? _selectedTruckId;
 
   @override
   void initState() {
     super.initState();
-    _loadTruckData(widget.truckId);
+    print('initState dipanggil');
+    print('ID truk yang diterima: ${widget.truckId}');
+    if (widget.truckId != 0) {
+      _loadTruckData(widget.truckId);
+    } else {
+      print('ID truk tidak valid, tidak memuat data.');
+    }
+    //_loadTruckData(widget.truckId);
+  }
+
+  @override
+  void didUpdateWidget(LaporanDetilPermobilPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.truckId != widget.truckId) {
+      print("ID truk yang diperbaharui : ${widget.truckId}");
+      _loadTruckData(widget.truckId);
+    }
   }
 
   Future<void> _loadTruckData(int id) async {
+    print('Mencoba memuat data untuk ID: $id');
     try {
-      _selectedTruck = await _databasehelper.getTruckById(id);
-      print('truk data berhasil di load : $_selectedTruck');
+      _selectedTruckId = await _databasehelper.getTruckById(id);
+      print('truk data berhasil di load : $_selectedTruckId');
     } catch (e) {
       print('gagal cuy');
     }
@@ -55,8 +76,8 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
                 UserheaderLaporanDetail(
                   titlePage: 'Laporan Detail',
                   iconHeader: 'assets/report icon.svg',
-                  nomor: _selectedTruck?.number ?? 0,
-                  platNomor: _selectedTruck?.platNomor ?? 'Loading...',
+                  nomor: _selectedTruckId?.id ?? 0,
+                  platNomor: _selectedTruckId?.platNomor ?? 'Loading...',
                 ),
                 SizedBox(
                   height: 20,

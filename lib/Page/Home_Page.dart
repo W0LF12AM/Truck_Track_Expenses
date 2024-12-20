@@ -17,19 +17,29 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  // int? _selectedTruckId;
+  int? _selectedTruckId;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      if (index == 2) {
+        _selectedTruckId = null;
+      }
     });
-    // if (index == 4) {
-    //   // Misalnya, jika truckId adalah 2
-    //   _selectedTruckId = 2; // Ganti dengan truckId yang sesuai
-    //   setState(() {
-    //     _selectedIndex = 4; // Ubah indeks untuk menampilkan halaman detail
-    //   });
-    // }
+  }
+
+  void _showTruckDetails(int truckId) {
+    print('ID truk yang dipilih: $truckId');
+    setState(() {
+      _selectedTruckId = truckId;
+      _selectedIndex = 4;
+    });
+
+    if (_selectedTruckId != null) {
+      print('ID truk yang akan dipanggil: $_selectedTruckId');
+    } else {
+      print('ID truk tidak valid, menggunakan default 0');
+    }
   }
 
   @override
@@ -185,11 +195,20 @@ class _HomePageState extends State<HomePage> {
               onItemTapped: _onItemTapped,
             ),
             const KelolaMobilPage(),
-            LaporanPermobilMenuPage(onItemTapped: _onItemTapped),
+            LaporanPermobilMenuPage(
+              onItemTapped: _onItemTapped,
+              showTruckDetails: _showTruckDetails,
+            ),
             const SetBudgetPage(),
             LaporanDetilPermobilPage(
+              goBack: () {
+                setState(() {
+                  _selectedTruckId = null;
+                  _selectedIndex = 2;
+                });
+              },
               onItemTapped: _onItemTapped,
-              truckId: 2,
+              truckId: _selectedTruckId ?? 0,
             )
           ])),
         ],

@@ -62,7 +62,6 @@ class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
                   height: 30,
                 ),
                 Headerlaporanmobil(
-                    number: widget.nomor,
                     platnomor: widget.platNomor,
                     navigate: () {},
                     textButton: 'Download')

@@ -1,7 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:note_app_vtwo/Page/Laporan_Detil_Permobil_Page.dart';
 import 'package:note_app_vtwo/data/model.dart';
 import 'package:note_app_vtwo/function/provider.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
@@ -11,8 +14,10 @@ import 'package:provider/provider.dart';
 
 class LaporanPermobilMenuPage extends StatefulWidget {
   final Function(int) onItemTapped;
+  final Function(int) showTruckDetails;
 
-  const LaporanPermobilMenuPage({super.key, required this.onItemTapped});
+  const LaporanPermobilMenuPage(
+      {super.key, required this.onItemTapped, required this.showTruckDetails});
 
   @override
   State<LaporanPermobilMenuPage> createState() =>
@@ -54,6 +59,18 @@ class _LaporanPermobilMenuPageState extends State<LaporanPermobilMenuPage> {
     });
   }
 
+  // void _showTruckDetails(Truck truck) {
+  //   setState(() {
+  //     _selectedTruck = truck;
+  //   });
+  // }
+
+  // void _goBackToList() {
+  //   setState(() {
+  //     _selectedTruck = null;
+  //   });
+  // }
+
   String formatDate(DateTime date) {
     return DateFormat('dd / MM / yyyy').format(date);
   }
@@ -81,6 +98,13 @@ class _LaporanPermobilMenuPageState extends State<LaporanPermobilMenuPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      // if (_selectedTruck != null)
+                      //   LaporanDetilPermobilPage(
+                      //     onItemTapped: widget.onItemTapped,
+                      //     truckId: _selectedTruck!.id,
+                      //     goBack: _goBackToList,
+                      //   )
+                      //else
                       if (_filteredTrucks.isEmpty)
                         Padding(
                           padding: EdgeInsets.symmetric(
@@ -103,7 +127,8 @@ class _LaporanPermobilMenuPageState extends State<LaporanPermobilMenuPage> {
                             sisaBudget: truck.platNomor,
                             tanggalInput: formatDate(DateTime.now()),
                             navigate: () {
-                              widget.onItemTapped(4);
+                              //widget.onItemTapped(4);
+                              widget.showTruckDetails(truck.id);
                             },
                             number: truck.number,
                             platnomor: truck.platNomor,
