@@ -27,8 +27,8 @@ class _LandingPageState extends State<LandingPage> {
                 UserheaderLandingPage(
                   onItemTapped: widget.onItemTapped,
                 ),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.02,
                 ),
                 MultiBarChart()
               ],
@@ -39,5 +39,3 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 }
-
-

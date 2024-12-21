@@ -13,12 +13,20 @@ class UserheaderLaporanDetail extends StatefulWidget {
       required this.titlePage,
       required this.iconHeader,
       required this.nomor,
-      required this.platNomor});
+      required this.platNomor,
+      required this.budget,
+      required this.expense,
+      required this.sisaBudget
+      });
 
   final String titlePage;
   final String iconHeader;
   int nomor;
   final String platNomor;
+  final String budget;
+  final String expense;
+  final String sisaBudget;
+
 
   @override
   State<UserheaderLaporanDetail> createState() =>
@@ -26,6 +34,8 @@ class UserheaderLaporanDetail extends StatefulWidget {
 }
 
 class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
+   
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -58,8 +68,8 @@ class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.025,
                 ),
                 Headerlaporanmobil(
                     platnomor: widget.platNomor,
@@ -80,17 +90,17 @@ class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
               Cardlaporanheader(
                 colorGradient: budgetColor,
                 titleCard: 'Budget',
-                budget: '22.000.000',
+                budget: widget.budget,
               ),
               Cardlaporanheader(
                 colorGradient: expenseColor,
                 titleCard: 'Pengeluaran',
-                budget: '2.000.000',
+                budget: widget.expense,
               ),
               Cardlaporanheader(
                 colorGradient: mainColor,
                 titleCard: 'Sisa',
-                budget: '20.000.000',
+                budget: widget.sisaBudget,
               )
             ],
           ),

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:note_app_vtwo/data/databaseHelper.dart';
 import 'package:note_app_vtwo/data/model.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
@@ -28,6 +29,7 @@ class LaporanDetilPermobilPage extends StatefulWidget {
 class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
   final DatabaseHelper _databasehelper = DatabaseHelper();
   Truck? _selectedTruckId;
+  List<Expense> _expense = [];
 
   @override
   void initState() {
@@ -65,6 +67,18 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_selectedTruckId == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    String formatBudget = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp. ')
+        .format(_selectedTruckId!.budgetTahunan);
+    String formatExpense =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp. ')
+            .format(_selectedTruckId!.totalExpense);
+    String formatSisaBudget =
+        NumberFormat.currency(locale: "id_ID", symbol: 'Rp. ')
+            .format(_selectedTruckId!.remainingBudget);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return Scaffold(
       backgroundColor: bgColor,
@@ -78,6 +92,9 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
                   iconHeader: 'assets/report icon.svg',
                   nomor: _selectedTruckId?.id ?? 0,
                   platNomor: _selectedTruckId?.platNomor ?? 'Loading...',
+                  budget: formatBudget,
+                  expense: formatExpense,
+                  sisaBudget: formatSisaBudget,
                 ),
                 SizedBox(
                   height: 20,
@@ -85,14 +102,18 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
-                      children: [
-                        Maintenancecarhistory(
-                          namaOnderdil: 'Bengsin',
-                          hargaOnderdil: '2.000.000',
-                          tanggalInput: '10 / 02 / 2024',
-                        ),
-                      ],
-                    ),
+                        children: _expense.map((expense) {
+                      return Maintenancecarhistory(
+                        namaOnderdil: expense.onderdil,
+                        hargaOnderdil: NumberFormat.currency(
+                                locale: 'id_ID',
+                                symbol: 'Rp. ',
+                                decimalDigits: 0)
+                            .format(expense.harga),
+                        tanggalInput:
+                            DateFormat('dd / MM / yyyy').format(expense.date),
+                      );
+                    }).toList()),
                   ),
                 ),
               ],
@@ -108,12 +129,20 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
         height: 70,
         child: FloatingActionButton(
           backgroundColor: secondaryColor,
-          onPressed: () {
-            showDialog(
+          onPressed: () async {
+            final newExpense = await showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return Tambahlaporanpengeluaran();
+                  return Tambahlaporanpengeluaran(
+                    truck: _selectedTruckId!,
+                  );
                 });
+
+            if (newExpense != null) {
+              setState(() {
+                _expense.add(newExpense);
+              });
+            }
           },
           child: Container(
             child: Icon(

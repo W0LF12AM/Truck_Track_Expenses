@@ -53,7 +53,7 @@ class Maintenancecarhistory extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Rp. $hargaOnderdil',
+                        '$hargaOnderdil',
                         style: GoogleFonts.poppins(
                             color: mainColor,
                             fontSize: MediaQuery.of(context).size.height * 0.03,

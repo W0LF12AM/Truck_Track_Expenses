@@ -12,6 +12,7 @@ class Cardlaporanheader extends StatelessWidget {
   final Color colorGradient;
   final String titleCard;
   final String budget;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class Cardlaporanheader extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.005,
             ),
             Text(
-              'Rp. $budget',
+              '$budget',
               style: GoogleFonts.poppins(
                 color: Colors.black,
                 fontSize: MediaQuery.of(context).size.width * 0.023,
