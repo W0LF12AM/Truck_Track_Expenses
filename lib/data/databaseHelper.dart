@@ -98,6 +98,11 @@ class DatabaseHelper {
     });
   }
 
+  Future<void> updateExpense(Expense expense) async {
+    final db = await database;
+    await db.update('expenses', expense.toMap(expense.id), where: 'id = ?', whereArgs: [expense.id]);
+  }
+
   Future<void> deleteExpense(int id) async {
     final db = await database;
     await db.delete('expenses', where: 'id = ?', whereArgs: [id]);

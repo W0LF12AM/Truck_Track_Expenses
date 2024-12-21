@@ -14,7 +14,7 @@ class Truck {
   }) : expenses = expenses ?? [];
 
   void addExpense(String onderdil, double harga, DateTime date) {
-    expenses.add(Expense(onderdil: onderdil, harga: harga, date: date));
+    expenses.add(Expense(onderdil: onderdil, harga: harga, date: date, id: id));
   }
 
   double get totalExpense {
@@ -43,11 +43,16 @@ class Truck {
 }
 
 class Expense {
+  final int id;
   final String onderdil;
   final double harga;
   final DateTime date;
 
-  Expense({required this.onderdil, required this.harga, required this.date});
+  Expense(
+      {required this.onderdil,
+      required this.harga,
+      required this.date,
+      required this.id});
 
   Map<String, dynamic> toMap(int truckId) {
     return {
@@ -60,6 +65,7 @@ class Expense {
 
   factory Expense.fromMap(Map<String, dynamic> map) {
     return Expense(
+        id: map['id'],
         onderdil: map['onderdil'],
         harga: map['harga'],
         date: DateTime.parse(map['date']));

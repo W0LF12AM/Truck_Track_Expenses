@@ -82,7 +82,7 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
     widget.truck.addExpense(onderdil, harga, _selectedDate!);
 
     Navigator.pop(context,
-        Expense(onderdil: onderdil, harga: harga, date: _selectedDate!));
+        Expense(onderdil: onderdil, harga: harga, date: _selectedDate!, id: 0));
   }
 
   @override
