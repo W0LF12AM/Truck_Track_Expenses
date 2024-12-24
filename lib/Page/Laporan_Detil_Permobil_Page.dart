@@ -38,6 +38,7 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
     print('ID truk yang diterima: ${widget.truckId}');
     if (widget.truckId != 0) {
       _loadTruckData(widget.truckId);
+      _loadExpenses();
     } else {
       print('ID truk tidak valid, tidak memuat data.');
     }
@@ -50,6 +51,7 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
     if (oldWidget.truckId != widget.truckId) {
       print("ID truk yang diperbaharui : ${widget.truckId}");
       _loadTruckData(widget.truckId);
+      _loadExpenses();
     }
   }
 
@@ -63,6 +65,14 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
     }
 
     setState(() {});
+  }
+
+  Future<void> _loadExpenses() async {
+    List<Expense> expenses =
+        await _databasehelper.getExpensesByTruckId(widget.truckId);
+    setState(() {
+      _expense = expenses;
+    });
   }
 
   @override
@@ -142,6 +152,7 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
               setState(() {
                 _expense.add(newExpense);
               });
+              _loadExpenses();
             }
           },
           child: Container(

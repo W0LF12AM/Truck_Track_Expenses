@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:note_app_vtwo/data/databaseHelper.dart';
 import 'package:note_app_vtwo/data/model.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
@@ -79,10 +80,15 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
         _hagraController.text.replaceAll(RegExp(r'[^0-9]'), '');
     double harga = double.tryParse(sanitizedHarga) ?? 0.0;
 
-    widget.truck.addExpense(onderdil, harga, _selectedDate!);
+    // widget.truck.addExpense(onderdil, harga, _selectedDate!);
 
-    Navigator.pop(context,
-        Expense(onderdil: onderdil, harga: harga, date: _selectedDate!, id: 0));
+    Expense newExpense =
+        Expense(onderdil: onderdil, harga: harga, date: _selectedDate!, id: 0);
+
+    DatabaseHelper().insertExpense(newExpense, widget.truck.id).then((_) {
+      print('Menambahkan pengeluaran: ${newExpense.toMap(widget.truck.id)}');
+      Navigator.pop(context, newExpense);
+    });
   }
 
   @override

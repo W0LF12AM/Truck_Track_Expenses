@@ -100,12 +100,23 @@ class DatabaseHelper {
 
   Future<void> updateExpense(Expense expense) async {
     final db = await database;
-    await db.update('expenses', expense.toMap(expense.id), where: 'id = ?', whereArgs: [expense.id]);
+    await db.update('expenses', expense.toMap(expense.id),
+        where: 'id = ?', whereArgs: [expense.id]);
   }
 
   Future<void> deleteExpense(int id) async {
     final db = await database;
     await db.delete('expenses', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<List<Expense>> getExpensesByTruckId(int truckId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('expenses', where: 'truckId = ?', whereArgs: [truckId]);
+
+    return List.generate(maps.length, (i) {
+      return Expense.fromMap(maps[i]);
+    });
   }
 }
 
@@ -347,5 +358,4 @@ class DatabaseHelper {
 //     await db.delete('expenses', where: 'id = ?', whereArgs: [id]);
 //   }
 // }
-
 

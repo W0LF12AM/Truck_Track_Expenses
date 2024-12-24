@@ -47,6 +47,7 @@ class Expense {
   final String onderdil;
   final double harga;
   final DateTime date;
+  
 
   Expense(
       {required this.onderdil,
