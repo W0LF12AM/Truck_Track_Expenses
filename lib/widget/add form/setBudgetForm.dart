@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:note_app_vtwo/data/databaseHelper.dart';
+import 'package:note_app_vtwo/data/model.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:note_app_vtwo/widget/dialog/dialogDataDisimpan.dart';
 
@@ -11,14 +15,172 @@ class Setbudgetform extends StatefulWidget {
 }
 
 class _SetbudgetformState extends State<Setbudgetform> {
+  List<Truck> trucks = [];
+  List<Truck> filteredTrucks = [];
+  String? selectedPlatNomor;
+  TextEditingController platNomorController = TextEditingController();
+  TextEditingController budgetController = TextEditingController();
+  OverlayEntry? overlayEntry;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTrucks();
+  }
+
+  Future<void> _loadTrucks() async {
+    DatabaseHelper database = DatabaseHelper();
+    trucks = await database.getTrucks();
+    setState(() {
+      filteredTrucks = trucks;
+    });
+  }
+
+  void _filterPlatNomor(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        filteredTrucks = trucks;
+      });
+      _removeOverlay();
+    } else {
+      setState(() {
+        filteredTrucks = trucks
+            .where((truck) =>
+                truck.platNomor.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      });
+      _showOverlay(context);
+    }
+  }
+
+  void _showOverlay(BuildContext context) {
+    if (overlayEntry != null) {
+      overlayEntry!.remove();
+    }
+
+    overlayEntry = OverlayEntry(
+        builder: (context) => Positioned(
+            left: MediaQuery.sizeOf(context).width * 0.45,
+            right: MediaQuery.sizeOf(context).width * 0.45,
+            top: MediaQuery.sizeOf(context).height * 0.5,
+            child: Material(
+              elevation: 4.0,
+              child: Container(
+                  height: 150,
+                  width: 100,
+                  decoration: BoxDecoration(
+                      color: secondaryColor,
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(color: Colors.black26, blurRadius: 4.0)
+                      ]),
+                  child: filteredTrucks.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: filteredTrucks.length > 5
+                              ? 5
+                              : filteredTrucks.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(filteredTrucks[index].platNomor),
+                              onTap: () {
+                                setState(() {
+                                  selectedPlatNomor =
+                                      filteredTrucks[index].platNomor;
+                                  platNomorController.text = selectedPlatNomor!;
+                                  filteredTrucks = [];
+                                });
+                                _removeOverlay();
+                              },
+                            );
+                          })
+                      : Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Text(
+                              'Truk tidak terdaftar',
+                              style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )),
+            )));
+    Overlay.of(context)!.insert(overlayEntry!);
+  }
+
+  void _saveData() async {
+    String budgetText = budgetController.text;
+    String sanitizedBudget = budgetText.replaceAll(RegExp(r'[^0-9]'), '');
+    int budgetValue = int.parse(sanitizedBudget);
+
+    if (selectedPlatNomor != null) {
+      List<Truck> trucks = await DatabaseHelper().getTrucks();
+      Truck? truckToUpdate = trucks.firstWhere(
+          (truck) => truck.platNomor == selectedPlatNomor,
+          orElse: () =>
+              Truck(id: -1, platNomor: '', number: 0, budgetTahunan: 0.0));
+      if (truckToUpdate.id != -1) {
+        await DatabaseHelper().saveBudget(truckToUpdate.id, budgetValue);
+
+        platNomorController.clear();
+        budgetController.clear();
+        selectedPlatNomor = null;
+
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Dialog(
+                backgroundColor: Colors.transparent,
+                child: Dialogdatadisimpan(
+                    titleCard: 'Data Berhasil Disimpan',
+                    pesan: 'Data yang sudah anda set \nberhasil dismpan'),
+              );
+            }).catchError((error) {
+          print('error save budget : $error');
+        });
+      }
+    }
+
+    // DatabaseHelper databaseHelper = DatabaseHelper();
+    // databaseHelper.saveBudget(selectedPlatNomor!, budgetValue);
+  }
+
+  void _onChanged(String value) {
+    String sanitizedValue = value.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (sanitizedValue.isNotEmpty) {
+      String formattedHarga = NumberFormat.currency(
+              locale: 'id_ID', symbol: 'Rp. ', decimalDigits: 0)
+          .format(int.parse(sanitizedValue));
+
+      budgetController.value = TextEditingValue(
+          text: formattedHarga,
+          selection: TextSelection.collapsed(offset: formattedHarga.length));
+    } else {
+      budgetController.clear();
+    }
+  }
+
+  void _removeOverlay() {
+    if (overlayEntry != null) {
+      overlayEntry!.remove();
+      overlayEntry = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    overlayEntry?.remove();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          vertical: MediaQuery.of(context).size.height * 0.2),
+          vertical: MediaQuery.of(context).size.height * 0.17),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.7,
-        height: MediaQuery.of(context).size.height * 0.38,
+        width: MediaQuery.of(context).size.width * 0.4,
+        height: MediaQuery.of(context).size.height * 0.5,
         decoration: BoxDecoration(
             color: secondaryColor, borderRadius: BorderRadius.circular(30)),
         child: Padding(
@@ -27,13 +189,13 @@ class _SetbudgetformState extends State<Setbudgetform> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.06,
-                    left: 30,
-                    bottom: 20),
+                    top: MediaQuery.of(context).size.height * 0.045,
+                    left: MediaQuery.sizeOf(context).width * 0.025,
+                    bottom: MediaQuery.sizeOf(context).height * 0.04),
                 child: Row(
                   children: [
                     Text(
-                      'Set / Update Budget',
+                      'Set Budget',
                       style: GoogleFonts.poppins(
                           color: mainColor,
                           fontSize: MediaQuery.of(context).size.width * 0.02,
@@ -43,165 +205,106 @@ class _SetbudgetformState extends State<Setbudgetform> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        decoration: BoxDecoration(
-                            color: formColor,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: TextField(
-                            textAlign: TextAlign.start,
-                            textAlignVertical: TextAlignVertical.center,
-                            style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.013),
-                            decoration: InputDecoration(
-                                hintText: 'Plat Nomor',
-                                hintStyle: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.013,
-                                ),
-                                border: InputBorder.none,
-                                suffixIcon: Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.grey,
-                                  size: 50,
-                                )),
-                          ),
-                        ),
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.sizeOf(context).width * 0.05),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  decoration: BoxDecoration(
+                      color: formColor, borderRadius: BorderRadius.circular(5)),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: GestureDetector(
+                      onTap: () {
+                        _showOverlay(context);
+                      },
+                      child: TextField(
+                        controller: platNomorController,
+                        onChanged: _filterPlatNomor,
+                        textAlign: TextAlign.start,
+                        textAlignVertical: TextAlignVertical.center,
+                        style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.bold,
+                            fontSize:
+                                MediaQuery.of(context).size.width * 0.013),
+                        decoration: InputDecoration(
+                            hintText: 'Plat Nomor',
+                            hintStyle: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.013,
+                            ),
+                            border: InputBorder.none,
+                            suffixIcon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Colors.grey,
+                              size: 50,
+                            )),
                       ),
                     ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Expanded(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        decoration: BoxDecoration(
-                            color: formColor,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: TextField(
-                            textAlign: TextAlign.start,
-                            textAlignVertical: TextAlignVertical.center,
-                            style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.013),
-                            decoration: InputDecoration(
-                                hintText: 'Tahun',
-                                hintStyle: GoogleFonts.poppins(
-                                    fontSize:
-                                        MediaQuery.of(context).size.width *
-                                            0.013,
-                                    fontWeight: FontWeight.bold),
-                                border: InputBorder.none,
-                                suffixIcon: Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.grey,
-                                  size: 50,
-                                )),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: MediaQuery.sizeOf(context).height * 0.02,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        decoration: BoxDecoration(
-                            color: formColor,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: TextField(
-                            textAlign: TextAlign.start,
-                            textAlignVertical: TextAlignVertical.center,
-                            style: GoogleFonts.poppins(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.013,
-                                fontWeight: FontWeight.bold),
-                            decoration: InputDecoration(
-                              hintText: 'Budget',
-                              hintStyle: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.013,
-                              ),
-                              border: InputBorder.none,
-                            ),
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.sizeOf(context).width * 0.05),
+                child: Expanded(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    decoration: BoxDecoration(
+                        color: formColor,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: TextField(
+                        onChanged: _onChanged,
+                        controller: budgetController,
+                        textAlign: TextAlign.start,
+                        textAlignVertical: TextAlignVertical.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: MediaQuery.of(context).size.width * 0.013,
+                            fontWeight: FontWeight.bold),
+                        decoration: InputDecoration(
+                          hintText: 'Budget',
+                          hintStyle: GoogleFonts.poppins(
+                            fontWeight: FontWeight.bold,
+                            fontSize: MediaQuery.of(context).size.width * 0.013,
                           ),
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: Dialogdatadisimpan(
-                                  titleCard: 'Data Berhasil Disimpan',
-                                  pesan:
-                                      'Data budget yang sudah anda set \nberhasil disimpan',
-                                ),
-                              );
-                            });
-                      },
-                      child: GestureDetector(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Dialog(
-                                  backgroundColor: Colors.transparent,
-                                  child: Dialogdatadisimpan(
-                                      titleCard: 'Data Berhasil Disimpan',
-                                      pesan:
-                                          'Data yang sudah anda set \nberhasil dismpan'),
-                                );
-                              });
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          width: MediaQuery.of(context).size.width * 0.12,
-                          decoration: BoxDecoration(
-                              color: mainColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(
-                            child: Text(
-                              'Simpan',
-                              style: GoogleFonts.poppins(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.04,
+              ),
+              GestureDetector(
+                onTap: () {
+                  _saveData();
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.sizeOf(context).width * 0.05),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    decoration: BoxDecoration(
+                        color: mainColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Center(
+                      child: Text(
+                        'Simpan',
+                        style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       ),
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               )
             ],

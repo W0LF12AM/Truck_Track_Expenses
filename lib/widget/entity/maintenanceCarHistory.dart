@@ -1,19 +1,166 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_app_vtwo/data/databaseHelper.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:note_app_vtwo/widget/dialog/dilaogEditDataLaporan.dart';
 
-class Maintenancecarhistory extends StatelessWidget {
+class Maintenancecarhistory extends StatefulWidget {
   final String namaOnderdil;
   final String hargaOnderdil;
   final String tanggalInput;
+  final int expenseId;
+  final Function onDelete;
 
   const Maintenancecarhistory(
       {super.key,
       required this.namaOnderdil,
       required this.hargaOnderdil,
-      required this.tanggalInput});
+      required this.tanggalInput,
+      required this.expenseId,
+      required this.onDelete});
+
+  @override
+  State<Maintenancecarhistory> createState() => _MaintenancecarhistoryState();
+}
+
+class _MaintenancecarhistoryState extends State<Maintenancecarhistory> {
+  final DatabaseHelper _databasehelper = DatabaseHelper();
+
+  void _confirmDelete(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Container(
+              width: 600,
+              height: 300,
+              child: Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      width: 500,
+                      height: 250,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: secondaryColor),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical:
+                                MediaQuery.sizeOf(context).height * 0.025),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Hapus Data',
+                              style: GoogleFonts.poppins(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: mainColor),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.sizeOf(context).width * 0.05),
+                              child: Divider(
+                                thickness: 4,
+                                color: mainColor,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              textAlign: TextAlign.center,
+                              'Apakah kamu yakin ingin \nmenghapus data tersebut?',
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black, fontSize: 15),
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    await DatabaseHelper()
+                                        .deleteExpense(widget.expenseId);
+                                    Navigator.pop(context);
+                                    widget.onDelete();
+                                  },
+                                  child: Container(
+                                    width: 120,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        color: secondaryColor,
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                            color: mainColor, width: 3)),
+                                    child: Center(
+                                      child: Text(
+                                        'Hapus',
+                                        style: GoogleFonts.poppins(
+                                            color: mainColor,
+                                            fontSize: MediaQuery.sizeOf(context)
+                                                    .width *
+                                                0.012,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.sizeOf(context).width * 0.005,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    width: 120,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        color: mainColor,
+                                        borderRadius: BorderRadius.circular(5)),
+                                    child: Center(
+                                      child: Text(
+                                        'Batal',
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.w500,
+                                            color: secondaryColor),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                      top: 5,
+                      left: 25,
+                      child: SvgPicture.asset(
+                        'assets/cancel dialog icon.svg',
+                        width: 60,
+                        height: 60,
+                      ))
+                ],
+              ),
+            ),
+
+            // widget.deleteEntity;
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +192,7 @@ class Maintenancecarhistory extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        namaOnderdil,
+                        widget.namaOnderdil,
                         style: GoogleFonts.poppins(
                             color: mainColor,
                             fontSize:
@@ -53,7 +200,7 @@ class Maintenancecarhistory extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '$hargaOnderdil',
+                        '${widget.hargaOnderdil}',
                         style: GoogleFonts.poppins(
                             color: mainColor,
                             fontSize: MediaQuery.of(context).size.height * 0.03,
@@ -66,7 +213,7 @@ class Maintenancecarhistory extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    tanggalInput,
+                    widget.tanggalInput,
                     style: GoogleFonts.poppins(
                         color: mainColor,
                         fontSize: MediaQuery.sizeOf(context).height * 0.025,
@@ -75,76 +222,25 @@ class Maintenancecarhistory extends StatelessWidget {
                   const SizedBox(
                     width: 40,
                   ),
-                  PopupMenuButton(
-                      color: secondaryColor,
-                      icon: SvgPicture.asset(
-                        'assets/triple dots icon.svg',
-                        width: MediaQuery.sizeOf(context).width * 0.03,
-                        height: MediaQuery.sizeOf(context).height * 0.03,
+                  GestureDetector(
+                    onTap: () {
+                      _confirmDelete(context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(
+                          MediaQuery.sizeOf(context).width * 0.004),
+                      width: MediaQuery.sizeOf(context).width * 0.025,
+                      height: MediaQuery.sizeOf(context).height * 0.045,
+                      decoration: BoxDecoration(
+                          color: mainColor,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: SvgPicture.asset(
+                        'assets/delete icon.svg',
+                        // width: MediaQuery.sizeOf(context).width * 0.03,
+                        // height: MediaQuery.sizeOf(context).height * 0.03,
                       ),
-                      itemBuilder: (BuildContext context) {
-                        return [
-                          PopupMenuItem(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 40, vertical: 10),
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Dilaogeditdatalaporan();
-                                    });
-                              },
-                              value: 'Edit',
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset('assets/edit icon.svg'),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Edit',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: mainColor),
-                                  ),
-                                ],
-                              )),
-                          PopupMenuItem(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Dialog(
-                                        backgroundColor: Colors.transparent,
-                                        // child: Dilaogperingatanhapusdata(),
-                                      );
-                                    });
-                              },
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 40, vertical: 10),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/delete icon.svg',
-                                    color: mainColor,
-                                    height: 30,
-                                    width: 30,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Delete',
-                                    style: GoogleFonts.poppins(
-                                        color: mainColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ))
-                        ];
-                      }),
+                    ),
+                  )
                 ],
               )
             ],

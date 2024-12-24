@@ -22,6 +22,7 @@ class EntitasLaporanMobil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Displaying Sisa Budget: $sisaBudget");
     return Padding(
       padding: const EdgeInsets.only(top: 15, left: 30, right: 30),
       child: GestureDetector(
@@ -83,7 +84,7 @@ class EntitasLaporanMobil extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                          'Rp. $sisaBudget',
+                          sisaBudget,
                           style: GoogleFonts.poppins(
                               color: mainColor,
                               fontSize:

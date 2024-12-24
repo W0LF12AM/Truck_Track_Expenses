@@ -18,11 +18,15 @@ class Truck {
   }
 
   double get totalExpense {
-    return expenses.fold(0, (sum, expense) => sum + expense.harga);
+    double total = expenses.fold(0.0, (sum, expense) => sum + expense.harga);
+    print("Total Expense calculated: $total");
+    return total;
   }
 
   double get remainingBudget {
-    return budgetTahunan - totalExpense;
+    double remaining = budgetTahunan - totalExpense;
+    print("Remaining Budget calculated: $remaining");
+    return remaining;
   }
 
   Map<String, dynamic> toMap() {
@@ -36,9 +40,9 @@ class Truck {
   factory Truck.fromMap(Map<String, dynamic> map) {
     return Truck(
         id: map['id'],
-        number: map['number'],
+        number: map['number'] ?? 0,
         platNomor: map['platNomor'],
-        budgetTahunan: map['budgetTahunan']);
+        budgetTahunan: map['budgetTahunan'] ?? 0.0);
   }
 }
 
@@ -47,7 +51,6 @@ class Expense {
   final String onderdil;
   final double harga;
   final DateTime date;
-  
 
   Expense(
       {required this.onderdil,
@@ -65,6 +68,8 @@ class Expense {
   }
 
   factory Expense.fromMap(Map<String, dynamic> map) {
+    double harga = map['harga']?.toDouble() ?? 0.0;
+    print("Loaded Expense: ${map['onderdil']}, Harga: $harga");
     return Expense(
         id: map['id'],
         onderdil: map['onderdil'],

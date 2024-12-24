@@ -34,17 +34,6 @@ class _LaporanPermobilMenuPageState extends State<LaporanPermobilMenuPage> {
     Provider.of<TruckProvider>(context, listen: false).loadTrucks();
   }
 
-  // Future<void> _loadTrucks() async {
-  //   List<Truck> trucks = await _databasehelper.getTrucks();
-
-  //   print('truk loaded bwang : $trucks');
-
-  //   setState(() {
-  //     _trucks = trucks;
-  //     _filteredTrucks = trucks;
-  //   });
-  // }
-
   void _searchTrucks(String query) {
     final truckProvider = Provider.of<TruckProvider>(context, listen: false);
     setState(() {
@@ -59,18 +48,6 @@ class _LaporanPermobilMenuPageState extends State<LaporanPermobilMenuPage> {
     });
   }
 
-  // void _showTruckDetails(Truck truck) {
-  //   setState(() {
-  //     _selectedTruck = truck;
-  //   });
-  // }
-
-  // void _goBackToList() {
-  //   setState(() {
-  //     _selectedTruck = null;
-  //   });
-  // }
-
   String formatDate(DateTime date) {
     return DateFormat('dd / MM / yyyy').format(date);
   }
@@ -78,9 +55,14 @@ class _LaporanPermobilMenuPageState extends State<LaporanPermobilMenuPage> {
   @override
   Widget build(BuildContext context) {
     final truckProvider = Provider.of<TruckProvider>(context);
-    _filteredTrucks = truckProvider.trucks.where((truck) {
-      return truck.platNomor.toLowerCase().contains(_searchQuery.toLowerCase());
-    }).toList();
+    setState(() {
+      _filteredTrucks = truckProvider.trucks.where((truck) {
+        return truck.platNomor
+            .toLowerCase()
+            .contains(_searchQuery.toLowerCase());
+      }).toList();
+    });
+
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return Scaffold(
       backgroundColor: bgColor,
@@ -98,13 +80,6 @@ class _LaporanPermobilMenuPageState extends State<LaporanPermobilMenuPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      // if (_selectedTruck != null)
-                      //   LaporanDetilPermobilPage(
-                      //     onItemTapped: widget.onItemTapped,
-                      //     truckId: _selectedTruck!.id,
-                      //     goBack: _goBackToList,
-                      //   )
-                      //else
                       if (_filteredTrucks.isEmpty)
                         Padding(
                           padding: EdgeInsets.symmetric(
@@ -124,7 +99,9 @@ class _LaporanPermobilMenuPageState extends State<LaporanPermobilMenuPage> {
                       else
                         for (var truck in _filteredTrucks)
                           EntitasLaporanMobil(
-                            sisaBudget: truck.platNomor,
+                            sisaBudget: NumberFormat.currency(
+                                    locale: 'id_ID', symbol: 'Rp. ')
+                                .format(truck.remainingBudget),
                             tanggalInput: formatDate(DateTime.now()),
                             navigate: () {
                               //widget.onItemTapped(4);

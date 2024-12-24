@@ -70,6 +70,14 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
   Future<void> _loadExpenses() async {
     List<Expense> expenses =
         await _databasehelper.getExpensesByTruckId(widget.truckId);
+    print("Expenses loaded: $expenses");
+    for (var expense in expenses) {
+      print(
+          "Expense: ${expense.onderdil}, Harga: ${expense.harga}"); // Debugging
+    }
+    if (_selectedTruckId != null) {
+      _selectedTruckId!.expenses = expenses;
+    }
     setState(() {
       _expense = expenses;
     });
@@ -83,12 +91,14 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
 
     String formatBudget = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp. ')
         .format(_selectedTruckId!.budgetTahunan);
+    double totalExpenseValue = _selectedTruckId!.totalExpense;
     String formatExpense =
         NumberFormat.currency(locale: 'id_ID', symbol: 'Rp. ')
-            .format(_selectedTruckId!.totalExpense);
+            .format(totalExpenseValue);
     String formatSisaBudget =
         NumberFormat.currency(locale: "id_ID", symbol: 'Rp. ')
             .format(_selectedTruckId!.remainingBudget);
+    print("Total Expense: ${totalExpenseValue}");
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return Scaffold(
       backgroundColor: bgColor,
@@ -122,6 +132,10 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
                             .format(expense.harga),
                         tanggalInput:
                             DateFormat('dd / MM / yyyy').format(expense.date),
+                        expenseId: expense.id,
+                        onDelete: () {
+                          _loadExpenses();
+                        },
                       );
                     }).toList()),
                   ),

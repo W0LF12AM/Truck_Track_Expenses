@@ -80,6 +80,12 @@ class DatabaseHelper {
     }
   }
 
+  Future<void> saveBudget(int id, int budgetTahunan) async {
+    final db = await database;
+    await db.update('trucks', {'budgetTahunan': budgetTahunan},
+        where: 'id = ?', whereArgs: [id]);
+  }
+
   //-----------------------------------------------------------------------------//
 
   Future<void> insertExpense(Expense expense, int truckId) async {
