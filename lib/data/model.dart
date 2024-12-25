@@ -76,4 +76,6 @@ class Expense {
         harga: map['harga'],
         date: DateTime.parse(map['date']));
   }
+
+  
 }

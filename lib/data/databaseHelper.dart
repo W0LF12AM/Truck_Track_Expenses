@@ -49,6 +49,15 @@ class DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  Future<List<Map<String, dynamic>>> getAllTrucks() async {
+    final db = await database;
+    // final List<Map<String, dynamic>> maps = await db.query('trucks');
+    return await db.query('trucks');
+    // return List.generate(maps.length, (i) {
+    //   return Truck.fromMap(maps[i]);
+    // });
+  }
+
   Future<List<Truck>> getTrucks() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('trucks');
@@ -94,6 +103,15 @@ class DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  Future<void> addExpense(Expense expense) async {
+    final db = await database;
+    await db.insert(
+      'expenses',
+      expense.toMap(expense.id),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
   Future<List<Expense>> getExpenses(int truckId) async {
     final db = await database;
     final List<Map<String, dynamic>> maps =
@@ -123,6 +141,15 @@ class DatabaseHelper {
     return List.generate(maps.length, (i) {
       return Expense.fromMap(maps[i]);
     });
+  }
+
+  Future<void> deleteExpensesByTruckId(int truckId) async {
+    final db = await database;
+    await db.delete(
+      'expenses',
+      where: 'truckId = ?',
+      whereArgs: [truckId],
+    );
   }
 }
 

@@ -22,9 +22,9 @@ class _HomePageState extends State<HomePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      if (index == 2) {
-        _selectedTruckId = null;
-      }
+      // if (index == 2) {
+      //   _selectedTruckId = null;
+      // }
     });
   }
 
@@ -35,11 +35,11 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = 4;
     });
 
-    if (_selectedTruckId != null) {
-      print('ID truk yang akan dipanggil: $_selectedTruckId');
-    } else {
-      print('ID truk tidak valid, menggunakan default 0');
-    }
+    // if (_selectedTruckId != null) {
+    //   print('ID truk yang akan dipanggil: $_selectedTruckId');
+    // } else {
+    //   print('ID truk tidak valid, menggunakan default 0');
+    // }
   }
 
   @override

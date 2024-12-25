@@ -4,8 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:note_app_vtwo/data/databaseHelper.dart';
 import 'package:note_app_vtwo/data/model.dart';
+import 'package:note_app_vtwo/function/provider.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:note_app_vtwo/widget/dialog/dialogDataDisimpan.dart';
+import 'package:provider/provider.dart';
 
 class Setbudgetform extends StatefulWidget {
   const Setbudgetform({super.key});
@@ -29,8 +31,7 @@ class _SetbudgetformState extends State<Setbudgetform> {
   }
 
   Future<void> _loadTrucks() async {
-    DatabaseHelper database = DatabaseHelper();
-    trucks = await database.getTrucks();
+    final trucks = Provider.of<TruckProvider>(context, listen: false).trucks;
     setState(() {
       filteredTrucks = trucks;
     });
@@ -39,12 +40,14 @@ class _SetbudgetformState extends State<Setbudgetform> {
   void _filterPlatNomor(String query) {
     if (query.isEmpty) {
       setState(() {
-        filteredTrucks = trucks;
+        filteredTrucks =
+            Provider.of<TruckProvider>(context, listen: false).trucks;
       });
       _removeOverlay();
     } else {
       setState(() {
-        filteredTrucks = trucks
+        filteredTrucks = Provider.of<TruckProvider>(context, listen: false)
+            .trucks
             .where((truck) =>
                 truck.platNomor.toLowerCase().contains(query.toLowerCase()))
             .toList();
@@ -81,7 +84,13 @@ class _SetbudgetformState extends State<Setbudgetform> {
                               : filteredTrucks.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              title: Text(filteredTrucks[index].platNomor),
+                              title: Text(
+                                filteredTrucks[index].platNomor,
+                                style: GoogleFonts.poppins(
+                                    fontSize:
+                                        MediaQuery.sizeOf(context).width * 0.01,
+                                    fontWeight: FontWeight.bold),
+                              ),
                               onTap: () {
                                 setState(() {
                                   selectedPlatNomor =
@@ -119,7 +128,8 @@ class _SetbudgetformState extends State<Setbudgetform> {
           orElse: () =>
               Truck(id: -1, platNomor: '', number: 0, budgetTahunan: 0.0));
       if (truckToUpdate.id != -1) {
-        await DatabaseHelper().saveBudget(truckToUpdate.id, budgetValue);
+        await Provider.of<TruckProvider>(context, listen: false)
+            .updateBudget(truckToUpdate.id, budgetValue);
 
         platNomorController.clear();
         budgetController.clear();

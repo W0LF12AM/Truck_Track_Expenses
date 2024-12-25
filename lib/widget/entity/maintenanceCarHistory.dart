@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/data/databaseHelper.dart';
+import 'package:note_app_vtwo/data/model.dart';
+import 'package:note_app_vtwo/function/provider.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:note_app_vtwo/widget/dialog/dilaogEditDataLaporan.dart';
+import 'package:provider/provider.dart';
 
 class Maintenancecarhistory extends StatefulWidget {
   final String namaOnderdil;
@@ -87,7 +90,10 @@ class _MaintenancecarhistoryState extends State<Maintenancecarhistory> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    await DatabaseHelper()
+                                    // await DatabaseHelper()
+                                    //     .deleteExpense(widget.expenseId);
+                                    await Provider.of<TruckProvider>(context,
+                                            listen: false)
                                         .deleteExpense(widget.expenseId);
                                     Navigator.pop(context);
                                     widget.onDelete();

@@ -4,7 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:note_app_vtwo/data/databaseHelper.dart';
 import 'package:note_app_vtwo/data/model.dart';
+import 'package:note_app_vtwo/function/provider.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
+import 'package:provider/provider.dart';
 
 class Tambahlaporanpengeluaran extends StatefulWidget {
   final Truck truck;
@@ -85,10 +87,18 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
     Expense newExpense =
         Expense(onderdil: onderdil, harga: harga, date: _selectedDate!, id: 0);
 
-    DatabaseHelper().insertExpense(newExpense, widget.truck.id).then((_) {
+    widget.truck.addExpense(onderdil, harga, _selectedDate!);
+
+    Provider.of<TruckProvider>(context, listen: false)
+        .addExpense(newExpense, widget.truck.id)
+        .then((_) {
       print('Menambahkan pengeluaran: ${newExpense.toMap(widget.truck.id)}');
-      Navigator.pop(context, newExpense);
+      Navigator.pop(context);
     });
+    // DatabaseHelper().insertExpense(newExpense, widget.truck.id).then((_) {
+    //   print('Menambahkan pengeluaran: ${newExpense.toMap(widget.truck.id)}');
+    //   Navigator.pop(context, newExpense);
+    // });
   }
 
   @override

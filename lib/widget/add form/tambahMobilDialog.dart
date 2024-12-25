@@ -20,7 +20,7 @@ class _TambahmobildialogState extends State<Tambahmobildialog> {
       backgroundColor: secondaryColor,
       child: Container(
         width: MediaQuery.sizeOf(context).width * 0.45,
-        height: MediaQuery.sizeOf(context).height * 0.29,
+        height: MediaQuery.sizeOf(context).height * 0.3,
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
