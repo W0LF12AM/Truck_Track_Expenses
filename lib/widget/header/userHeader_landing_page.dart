@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:note_app_vtwo/widget/dialog/dialogDownloadData.dart';
 import 'package:note_app_vtwo/widget/dialog/dialogResetData.dart';
@@ -19,6 +20,19 @@ class UserheaderLandingPage extends StatefulWidget {
 class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String greetings;
+
+    if (now.hour < 12) {
+      greetings = 'Good Morning';
+    } else if (now.hour < 18) {
+      greetings = 'Good Afternoon';
+    } else {
+      greetings = 'Good Evening';
+    }
+
+    String formatDate = DateFormat('EEEE,  dd MMMM yyyy').format(now);
+
     return Stack(
       children: [
         Container(
@@ -35,7 +49,7 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Good Evening Sir!',
+                      Text('$greetings Sir!',
                           style: GoogleFonts.poppins(
                               fontSize:
                                   MediaQuery.sizeOf(context).height * 0.05,
@@ -60,10 +74,10 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
                             height: MediaQuery.sizeOf(context).height * 0.03,
                           ),
                           SizedBox(
-                            width: MediaQuery.sizeOf(context).width * 0.015,
+                            width: MediaQuery.sizeOf(context).width * 0.0085,
                           ),
                           Text(
-                            'DD/MM/YYYY',
+                            formatDate,
                             style: GoogleFonts.poppins(
                                 color: Colors.white,
                                 fontSize:
@@ -71,7 +85,7 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
                                 fontWeight: FontWeight.normal),
                           ),
                           SizedBox(
-                            width: MediaQuery.sizeOf(context).width * 0.02,
+                            width: MediaQuery.sizeOf(context).width * 0.01,
                           ),
                           SvgPicture.asset(
                             'assets/profile icon.svg',

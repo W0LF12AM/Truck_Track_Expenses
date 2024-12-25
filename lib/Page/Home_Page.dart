@@ -18,6 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   int? _selectedTruckId;
+  int truckId = 24;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -192,6 +193,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
               child: IndexedStack(index: _selectedIndex, children: [
             LandingPage(
+              truckId: truckId,
               onItemTapped: _onItemTapped,
             ),
             const KelolaMobilPage(),

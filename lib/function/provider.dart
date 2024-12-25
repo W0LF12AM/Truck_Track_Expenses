@@ -6,8 +6,10 @@ import 'package:sqflite/sqflite.dart';
 class TruckProvider with ChangeNotifier {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
   List<Truck> _trucks = [];
+  List<double> _maintenanceData = List.filled(12, 0);
 
   List<Truck> get trucks => _trucks;
+  List<double> get maintenanceData => _maintenanceData;
 
   Future<void> loadTrucks() async {
     // _trucks = await _databaseHelper.getTrucks();
@@ -53,5 +55,10 @@ class TruckProvider with ChangeNotifier {
   Future<void> deleteExpense(int expenseId) async {
     await _databaseHelper.deleteExpense(expenseId);
     await loadTrucks();
+  }
+
+  Future<void> loadMonthlyMaintenanceData(int truckId) async {
+    _maintenanceData = await _databaseHelper.getMonthlyMaintenanceData(truckId);
+    notifyListeners();
   }
 }

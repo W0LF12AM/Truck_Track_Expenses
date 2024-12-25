@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:note_app_vtwo/data/databaseHelper.dart';
+import 'package:note_app_vtwo/function/provider.dart';
 import 'dart:math';
 
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
+import 'package:provider/provider.dart';
 
 class MultiBarChart extends StatelessWidget {
+  final int truckId;
+
+  MultiBarChart({required this.truckId});
+
   @override
   Widget build(BuildContext context) {
+    Provider.of<TruckProvider>(context, listen: false)
+        .loadMonthlyMaintenanceData(truckId);
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.03,
@@ -16,36 +25,76 @@ class MultiBarChart extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.4,
         decoration: BoxDecoration(
             color: secondaryColor, borderRadius: BorderRadius.circular(10)),
-        child: BarChart(
-          BarChartData(
-            gridData: const FlGridData(show: true),
-            titlesData: const FlTitlesData(
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(showTitles: true),
+        child:
+            Consumer<TruckProvider>(builder: (context, truckProvider, child) {
+          if (truckProvider.maintenanceData.isEmpty) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return BarChart(
+            BarChartData(
+              gridData: const FlGridData(show: true),
+              titlesData: FlTitlesData(
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: true),
+                ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 38,
+                    getTitlesWidget: (value, meta) {
+                      switch (value.toInt()) {
+                        case 0:
+                          return Text('Jan');
+                        case 1:
+                          return Text('Feb');
+                        case 2:
+                          return Text('Mar');
+                        case 3:
+                          return Text('Apr');
+                        case 4:
+                          return Text('May');
+                        case 5:
+                          return Text('Jun');
+                        case 6:
+                          return Text('Jul');
+                        case 7:
+                          return Text('Aug');
+                        case 8:
+                          return Text('Sep');
+                        case 9:
+                          return Text('Oct');
+                        case 10:
+                          return Text('Nov');
+                        case 11:
+                          return Text('Dec');
+                        default:
+                          return Text('');
+                      }
+                    },
+                  ),
+                ),
               ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(showTitles: true),
-              ),
+              borderData: FlBorderData(show: true),
+              barGroups: _generateBarGroups(truckProvider.maintenanceData),
             ),
-            borderData: FlBorderData(show: true),
-            barGroups: _generateBarGroups(),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }
 
-  List<BarChartGroupData> _generateBarGroups() {
+  List<BarChartGroupData> _generateBarGroups(List<double> maintenanceData) {
     List<BarChartGroupData> barGroups = [];
-    Random random = Random();
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < maintenanceData.length; i++) {
       barGroups.add(
         BarChartGroupData(
-          x: i * 2,
+          x: i,
           barRods: [
             BarChartRodData(
-                toY: random.nextDouble() * 10, // Data acak
+                toY: maintenanceData[i],
                 color: mainColor,
                 // color: Colors.primaries[i %
                 //     Colors

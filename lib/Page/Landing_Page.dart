@@ -5,9 +5,10 @@ import 'package:note_app_vtwo/widget/other/expenseChart.dart';
 import 'package:note_app_vtwo/widget/header/userHeader_landing_page.dart';
 
 class LandingPage extends StatefulWidget {
-  LandingPage({super.key, required this.onItemTapped});
+  LandingPage({super.key, required this.onItemTapped, required this.truckId});
 
   final Function(int) onItemTapped;
+  final int truckId;
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -30,7 +31,7 @@ class _LandingPageState extends State<LandingPage> {
                 SizedBox(
                   height: MediaQuery.sizeOf(context).height * 0.02,
                 ),
-                MultiBarChart()
+                MultiBarChart(truckId: widget.truckId,)
               ],
             ),
           )

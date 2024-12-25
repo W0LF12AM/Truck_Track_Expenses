@@ -1,4 +1,5 @@
 import 'package:note_app_vtwo/data/model.dart';
+import 'package:note_app_vtwo/main.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -150,6 +151,22 @@ class DatabaseHelper {
       where: 'truckId = ?',
       whereArgs: [truckId],
     );
+  }
+
+  //-----------------------------------------------------------------------------//
+
+  Future<List<double>> getMonthlyMaintenanceData(int truckId) async {
+    final db = await database;
+    List<double> maintenanceData = List.filled(12, 0);
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+        '''SELECT strftime('%m', date) as month, SUM(harga) as total FROM expenses WHERE truckId = ? GROUP BY month''', [truckId]);
+
+    for (var map in maps) {
+      int month = int.parse(map['month']);
+      maintenanceData[month - 1] = map['total']?.toDouble() ?? 0;
+    }
+    return maintenanceData;
   }
 }
 
