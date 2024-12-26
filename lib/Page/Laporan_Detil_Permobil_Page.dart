@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -36,16 +38,8 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
   @override
   void initState() {
     super.initState();
-    // print('initState dipanggil');
-    // print('ID truk yang diterima: ${widget.truckId}');
-    // if (widget.truckId != 0) {
-    //   _loadTruckData(widget.truckId);
-    //   _loadExpenses();
-    // } else {
-    //   print('ID truk tidak valid, tidak memuat data.');
-    // }
+
     Provider.of<TruckProvider>(context, listen: false).loadTrucks();
-    //_loadTruckData(widget.truckId);
   }
 
   @override
@@ -153,6 +147,8 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
                                 .format(expense.harga),
                             tanggalInput: DateFormat('dd / MM / yyyy')
                                 .format(expense.date),
+                            inputTime:
+                                '${expense.time.hour}:${expense.time.minute}',
                             expenseId: expense.id,
                             onDelete: () {
                               _loadExpenses();
@@ -184,10 +180,6 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
                     });
 
                 if (newExpense != null) {
-                  // _loadExpenses();
-                  // setState(() {
-                  //   _expense.add(newExpense);
-                  // });
                   await Provider.of<TruckProvider>(context, listen: false)
                       .addExpense(newExpense, selectedTruck.id);
                 }

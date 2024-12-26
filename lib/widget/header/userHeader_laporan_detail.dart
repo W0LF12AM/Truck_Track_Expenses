@@ -11,6 +11,7 @@ import 'package:note_app_vtwo/data/model.dart';
 import 'package:note_app_vtwo/function/provider.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:note_app_vtwo/widget/card/cardLaporanHeader.dart';
+import 'package:note_app_vtwo/widget/dialog/dialogDataDisimpan.dart';
 import 'package:note_app_vtwo/widget/header/headerLaporanMobil.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +43,7 @@ class UserheaderLaporanDetail extends StatefulWidget {
 }
 
 class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
-  Future<void> saveTruckExpensesToExcel(int truckId) async {
+  Future<String> saveTruckExpensesToExcel(int truckId) async {
     final truckProvider = Provider.of<TruckProvider>(context, listen: false);
 
     await truckProvider.loadExpensesByTruckId(truckId);
@@ -57,7 +58,7 @@ class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
 
     if (selectedTruck.id == -1) {
       print('Truk tidak ditemukan');
-      return;
+      return '';
     }
 
     List<Expense> expenses = truckProvider.expenses;
@@ -70,6 +71,7 @@ class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
       TextCellValue('Plat Nomor'),
       TextCellValue('Bulan'),
       TextCellValue('Tanggal Input'),
+      TextCellValue('Waktu'),
       TextCellValue('Onderdil'),
       TextCellValue('Harga'),
     ]);
@@ -89,12 +91,16 @@ class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
         'November',
         'Desember'
       ][expense.date.month - 1];
+
+      String timeFormatted = '${expense.time.hour}:${expense.time.minute}';
       sheet.appendRow([
         TextCellValue(selectedTruck.platNomor),
         TextCellValue(month),
         TextCellValue(expense.date.toIso8601String()),
+        TextCellValue(timeFormatted),
         TextCellValue(expense.onderdil),
-        DoubleCellValue(expense.harga),
+        TextCellValue(
+            'Rp ${expense.harga.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}'),
       ]);
     }
 
@@ -103,31 +109,42 @@ class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
       TextCellValue(''),
     ]);
 
+    double totalExpense = truckProvider.getTotalExpense();
+    double remainingBudget = truckProvider.getRemainingBudget(selectedTruck.id);
+
     sheet.appendRow([
-      TextCellValue('Total Pengeluaran: ${truckProvider.getTotalExpense()}'),
-      TextCellValue('Budget: ${selectedTruck.budgetTahunan}'),
-      TextCellValue('Sisa Budget: ${truckProvider.getRemainingBudget(truckId)}')
+      TextCellValue(
+          'Total Pengeluaran: Rp ${totalExpense.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}'),
+      TextCellValue(
+          'Budget: Rp ${selectedTruck.budgetTahunan.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}'),
+      TextCellValue(
+          'Sisa Budget: Rp ${remainingBudget.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}'),
     ]);
 
     final directory = await getApplicationDocumentsDirectory();
     final downloadDirectory =
-        Directory('${directory!.path}/Downloaded Truck Data');
+        Directory('${directory.path}/Downloaded Truck Data/Truck');
 
     if (!await downloadDirectory.exists()) {
       await downloadDirectory.create(recursive: true);
     }
 
-    String fileName = '${selectedTruck.platNomor}_expenses.xlsx';
+    String baseFileName = '${selectedTruck.platNomor} expenses.xlsx';
+    String filePath = '${downloadDirectory.path}/$baseFileName';
+    var file = File(filePath);
 
-    final filePath = '${downloadDirectory.path}/$fileName';
-    final file = File(filePath);
-    if (await file.exists()) {
-      await file.delete(); // Hapus file yang sudah ada
+    int copyKe = 1;
+
+    while (await file.exists()) {
+      copyKe++;
+      filePath = '${downloadDirectory.path}/copy $copyKe of $baseFileName.xlsx';
+      file = File(filePath);
     }
 
     await file.writeAsBytes(await excel.encode() ?? []);
 
     print('File saved at $filePath');
+    return filePath;
   }
 
   @override
@@ -167,8 +184,20 @@ class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
                 ),
                 Headerlaporanmobil(
                     platnomor: widget.platNomor,
-                    navigate: () {
-                      saveTruckExpensesToExcel(widget.truckId);
+                    navigate: () async {
+                      String filePath =
+                          await saveTruckExpensesToExcel(widget.truckId);
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              backgroundColor: Colors.transparent,
+                              child: Dialogdatadisimpan(
+                                  titleCard: 'Berhasil Mengunduh Data',
+                                  pesan:
+                                      'Data berhasil diunduh pada folder: $filePath'),
+                            );
+                          });
                     },
                     textButton: 'Download')
               ],

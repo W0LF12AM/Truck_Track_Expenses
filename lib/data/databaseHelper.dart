@@ -1,5 +1,4 @@
 import 'package:note_app_vtwo/data/model.dart';
-import 'package:note_app_vtwo/main.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -35,6 +34,7 @@ class DatabaseHelper {
             onderdil TEXT,
             harga REAL,
             date TEXT,
+            time TEXT, 
             FOREIGN KEY (truckId) REFERENCES trucks(id) ON DELETE CASCADE
             );
             ''');
@@ -52,11 +52,7 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> getAllTrucks() async {
     final db = await database;
-    // final List<Map<String, dynamic>> maps = await db.query('trucks');
     return await db.query('trucks');
-    // return List.generate(maps.length, (i) {
-    //   return Truck.fromMap(maps[i]);
-    // });
   }
 
   Future<List<Truck>> getTrucks() async {
@@ -108,7 +104,7 @@ class DatabaseHelper {
     final db = await database;
     await db.insert(
       'expenses',
-      expense.toMap(expense.id),
+      expense.toMap(expense.id), // Pastikan toMap() mencakup waktu
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -167,5 +163,15 @@ class DatabaseHelper {
       monthlyExpense[month - 1] = map['total']?.toDouble() ?? 0;
     }
     return monthlyExpense;
+  }
+
+  Future<void> clearAllTrucksData() async {
+    final db = await database;
+    await db.delete('trucks');
+  }
+
+  Future<void> clearAllExpenses() async {
+    final db = await database;
+    await db.delete('expenses');
   }
 }

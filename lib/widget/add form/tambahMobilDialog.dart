@@ -82,11 +82,11 @@ class _TambahmobildialogState extends State<Tambahmobildialog> {
                           color: mainColor,
                           borderRadius: BorderRadius.circular(5)),
                       child: Padding(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(
+                            MediaQuery.sizeOf(context).width * 0.006),
                         child: SvgPicture.asset(
                           'assets/cancel icon.svg',
                           color: secondaryColor,
-                          width: MediaQuery.sizeOf(context).width * 0.03,
                         ),
                       ),
                     ),

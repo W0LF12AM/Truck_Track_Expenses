@@ -4,7 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
 class Dialogresetdata extends StatelessWidget {
-  const Dialogresetdata({super.key});
+  VoidCallback restart;
+
+ Dialogresetdata({super.key, required this.restart});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class Dialogresetdata extends StatelessWidget {
                     ),
                     Text(
                       textAlign: TextAlign.center,
-                      'Apakah kamu yakin ingin \nmenghapus data tersebut?',
+                      'Apakah kamu yakin ingin \nmenghapus semua data tersebut?',
                       style: GoogleFonts.poppins(
                           color: Colors.black, fontSize: 15),
                     ),
@@ -59,7 +61,7 @@ class Dialogresetdata extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GestureDetector(
-                          onTap: () {},
+                          onTap: restart,
                           child: Container(
                             width: MediaQuery.sizeOf(context).width * 0.07,
                             height: MediaQuery.sizeOf(context).height * 0.048,

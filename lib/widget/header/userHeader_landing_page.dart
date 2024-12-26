@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:note_app_vtwo/data/databaseHelper.dart';
 import 'package:note_app_vtwo/data/model.dart';
 import 'package:note_app_vtwo/function/provider.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
+import 'package:note_app_vtwo/widget/dialog/dialogDataDisimpan.dart';
 import 'package:note_app_vtwo/widget/dialog/dialogDownloadData.dart';
 import 'package:note_app_vtwo/widget/dialog/dialogResetData.dart';
 import 'package:note_app_vtwo/widget/card/menuCard.dart';
@@ -25,7 +27,7 @@ class UserheaderLandingPage extends StatefulWidget {
 }
 
 class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
-  Future<void> saveAllTrucksExpensesToExcel() async {
+  Future<String> saveAllTrucksExpensesToExcel() async {
     final truckProvider = Provider.of<TruckProvider>(context, listen: false);
 
     await truckProvider.loadTrucks();
@@ -40,6 +42,7 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
         TextCellValue('Plat Nomor'),
         TextCellValue('Bulan'),
         TextCellValue('Tanggal Input'),
+        TextCellValue('Waktu'),
         TextCellValue('Onderdil'),
         TextCellValue('Harga')
       ]);
@@ -63,40 +66,67 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
           'Desember'
         ][expense.date.month - 1];
 
+        String timeFormatted = '${expense.time.hour}:${expense.time.minute}';
         sheet.appendRow([
           TextCellValue(truck.platNomor),
           TextCellValue(month),
           TextCellValue(expense.date.toIso8601String()),
+          TextCellValue(timeFormatted),
           TextCellValue(expense.onderdil),
-          DoubleCellValue(expense.harga)
+          TextCellValue(
+              'Rp ${expense.harga.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}')
         ]);
       }
 
-      sheet.appendRow([TextCellValue('')]);
+      sheet.appendRow([TextCellValue(''), TextCellValue('')]);
 
       double totalExpense = truckProvider.getTotalExpense();
       double remainingBudget = truckProvider.getRemainingBudget(truck.id);
 
       sheet.appendRow([
-        TextCellValue('Total Pengeluaran: $totalExpense'),
-        TextCellValue('Budget: ${truck.budgetTahunan}'),
-        TextCellValue('Sisa Budget: $remainingBudget')
+        TextCellValue(
+            'Total Pengeluaran: Rp ${totalExpense.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}'),
+        TextCellValue(
+            'Budget: Rp ${truck.budgetTahunan.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}'),
+        TextCellValue(
+            'Sisa Budget: Rp ${remainingBudget.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}'),
       ]);
     }
 
     final directory = await getApplicationDocumentsDirectory();
     final downloadDirectory =
-        Directory('${directory!.path}/Downloaded Truck Data');
-    final filePath = '${downloadDirectory.path}/all trucks expenses.xlsx';
-    final file = File(filePath);
+        Directory('${directory.path}/Downloaded Truck Data');
 
-    if (await file.exists()) {
-      await file.delete();
+    if (!await downloadDirectory.exists()) {
+      await downloadDirectory.create(recursive: true);
+    }
+
+    String baseFileName = 'all trucks expenses.xlsx';
+    String filePath = '${downloadDirectory.path}/$baseFileName';
+    var file = File(filePath);
+
+    int copyKe = 1;
+
+    while (await file.exists()) {
+      copyKe++;
+      filePath = '${downloadDirectory.path}/copy $copyKe of $baseFileName';
+      file = File(filePath);
     }
 
     await file.writeAsBytes(await excel.encode() ?? []);
 
     print('File saved at $filePath');
+    return filePath;
+  }
+
+  Future<void> resetAllData() async {
+    final truckProvider = Provider.of<TruckProvider>(context, listen: false);
+
+    await DatabaseHelper().clearAllTrucksData();
+    await DatabaseHelper().clearAllExpenses();
+
+    await truckProvider.clearAllTrucks();
+    await truckProvider.clearAllExpenses();
   }
 
   @override
@@ -217,12 +247,17 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
               description: 'Unduh data berdasarkan tahun',
               buttonColor: mainColor,
               buttonName: 'Download',
-              navigate: () {
+              navigate: () async {
+                String filePath = await saveAllTrucksExpensesToExcel();
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return Dialogdownloaddata(
-                        download: saveAllTrucksExpensesToExcel,
+                      return Dialog(
+                        backgroundColor: Colors.transparent,
+                        child: Dialogdatadisimpan(
+                            titleCard: 'Berhasil Mengunduh Data',
+                            pesan:
+                                'Data berhasil diunduh pada folder: $filePath'),
                       );
                     });
               },
@@ -239,7 +274,25 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
                     builder: (BuildContext context) {
                       return Dialog(
                         backgroundColor: Colors.transparent,
-                        child: Dialogresetdata(),
+                        child: Dialogresetdata(
+                          restart: () async {
+                            await resetAllData();
+                            await Provider.of<TruckProvider>(context,
+                                    listen: false)
+                                .loadMonthlyMaintenanceData();
+                            Navigator.pop(context);
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                      backgroundColor: Colors.transparent,
+                                      child: Dialogdatadisimpan(
+                                          titleCard: 'Data berhasil direset',
+                                          pesan:
+                                              'Semua data berhasil dihapus'));
+                                });
+                          },
+                        ),
                       );
                     });
               },

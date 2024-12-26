@@ -20,7 +20,7 @@ class Dialogdatadisimpan extends StatelessWidget {
           Center(
             child: Container(
               width: 500,
-              height: 250,
+              height: 270,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: secondaryColor),
@@ -50,14 +50,19 @@ class Dialogdatadisimpan extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      textAlign: TextAlign.center,
-                      pesan,
-                      style: GoogleFonts.poppins(
-                          color: Colors.black, fontSize: 15),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal:
+                              MediaQuery.sizeOf(context).height * 0.025),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        pesan,
+                        style: GoogleFonts.poppins(
+                            color: Colors.black, fontSize: 15),
+                      ),
                     ),
                     SizedBox(
-                      height: 25,
+                      height: MediaQuery.sizeOf(context).height * 0.028,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

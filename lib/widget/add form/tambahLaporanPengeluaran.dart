@@ -22,6 +22,7 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
   final TextEditingController _hagraController = TextEditingController();
   DateTime? _selectedDate;
 
+
   void _onChanged(String value) {
     String sanitizedValue = value.replaceAll(RegExp(r'[^0-9]'), '');
 
@@ -82,12 +83,12 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
         _hagraController.text.replaceAll(RegExp(r'[^0-9]'), '');
     double harga = double.tryParse(sanitizedHarga) ?? 0.0;
 
-    // widget.truck.addExpense(onderdil, harga, _selectedDate!);
+    TimeOfDay currentTime = TimeOfDay.now();
 
     Expense newExpense =
-        Expense(onderdil: onderdil, harga: harga, date: _selectedDate!, id: 0);
+        Expense(onderdil: onderdil, harga: harga, date: _selectedDate!, id: 0, time: currentTime);
 
-    widget.truck.addExpense(onderdil, harga, _selectedDate!);
+    widget.truck.addExpense(onderdil, harga, _selectedDate!, currentTime);
 
     Provider.of<TruckProvider>(context, listen: false)
         .addExpense(newExpense, widget.truck.id)
@@ -95,10 +96,6 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
       print('Menambahkan pengeluaran: ${newExpense.toMap(widget.truck.id)}');
       Navigator.pop(context);
     });
-    // DatabaseHelper().insertExpense(newExpense, widget.truck.id).then((_) {
-    //   print('Menambahkan pengeluaran: ${newExpense.toMap(widget.truck.id)}');
-    //   Navigator.pop(context, newExpense);
-    // });
   }
 
   @override
@@ -217,24 +214,6 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
                   ),
                 ),
               ),
-              // Container(
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(5),
-              //     color: formColor,
-              //   ),
-              //   height: MediaQuery.sizeOf(context).height * 0.06,
-              //   child: TextField(
-              //     controller: _hagraController,
-              //     textAlign: TextAlign.start,
-              //     style: GoogleFonts.poppins(
-              //         fontWeight: FontWeight.bold, fontSize: 20),
-              //     decoration: InputDecoration(
-              //       border: InputBorder.none,
-              //       hintText: 'Harga',
-              //       contentPadding: EdgeInsets.only(left: 10),
-              //     ),
-              //   ),
-              // ),
 
               SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.03,

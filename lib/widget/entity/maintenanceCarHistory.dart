@@ -12,6 +12,7 @@ class Maintenancecarhistory extends StatefulWidget {
   final String namaOnderdil;
   final String hargaOnderdil;
   final String tanggalInput;
+  final String inputTime;
   final int expenseId;
   final Function onDelete;
 
@@ -21,7 +22,8 @@ class Maintenancecarhistory extends StatefulWidget {
       required this.hargaOnderdil,
       required this.tanggalInput,
       required this.expenseId,
-      required this.onDelete});
+      required this.onDelete,
+      required this.inputTime});
 
   @override
   State<Maintenancecarhistory> createState() => _MaintenancecarhistoryState();
@@ -218,12 +220,25 @@ class _MaintenancecarhistoryState extends State<Maintenancecarhistory> {
               ),
               Row(
                 children: [
-                  Text(
-                    widget.tanggalInput,
-                    style: GoogleFonts.poppins(
-                        color: mainColor,
-                        fontSize: MediaQuery.sizeOf(context).height * 0.025,
-                        fontWeight: FontWeight.bold),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        widget.tanggalInput,
+                        style: GoogleFonts.poppins(
+                            color: mainColor,
+                            fontSize: MediaQuery.sizeOf(context).height * 0.018,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        widget.inputTime,
+                        style: GoogleFonts.poppins(
+                            color: mainColor,
+                            fontSize: MediaQuery.sizeOf(context).height * 0.018,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
                   ),
                   const SizedBox(
                     width: 40,

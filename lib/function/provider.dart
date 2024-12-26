@@ -78,4 +78,14 @@ class TruckProvider with ChangeNotifier {
     final truck = _trucks.firstWhere((t) => t.id == truckId);
     return truck.budgetTahunan - getTotalExpense();
   }
+
+  Future<void> clearAllTrucks() async {
+    _trucks.clear();
+    notifyListeners();
+  }
+
+    Future<void> clearAllExpenses() async {
+    _trucks.clear();
+    notifyListeners();
+  }
 }
