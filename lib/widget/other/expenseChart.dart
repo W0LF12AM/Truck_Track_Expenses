@@ -8,14 +8,10 @@ import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 import 'package:provider/provider.dart';
 
 class MultiBarChart extends StatelessWidget {
-  final int truckId;
-
-  MultiBarChart({required this.truckId});
-
   @override
   Widget build(BuildContext context) {
     Provider.of<TruckProvider>(context, listen: false)
-        .loadMonthlyMaintenanceData(truckId);
+        .loadMonthlyMaintenanceData();
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.03,

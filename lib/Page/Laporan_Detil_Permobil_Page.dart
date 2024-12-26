@@ -98,7 +98,6 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
       return Center(child: CircularProgressIndicator());
     }
 
-
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return Consumer<TruckProvider>(
       builder: (context, truckProvider, child) {
@@ -129,6 +128,7 @@ class _LaporanDetilPermobilPageState extends State<LaporanDetilPermobilPage> {
                 child: Column(
                   children: [
                     UserheaderLaporanDetail(
+                      truckId: selectedTruck.id,
                       titlePage: 'Laporan Detail',
                       iconHeader: 'assets/report icon.svg',
                       nomor: _selectedTruckId?.id ?? 0,

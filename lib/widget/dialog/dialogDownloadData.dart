@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
 
 class Dialogdownloaddata extends StatelessWidget {
-  const Dialogdownloaddata({super.key});
+  VoidCallback download;
+  Dialogdownloaddata({super.key, required this.download});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +13,7 @@ class Dialogdownloaddata extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(20),
         width: MediaQuery.sizeOf(context).width * 0.22,
-        height: MediaQuery.sizeOf(context).height * 0.28,
+        height: MediaQuery.sizeOf(context).height * 0.23,
         decoration: BoxDecoration(
             color: secondaryColor, borderRadius: BorderRadius.circular(5)),
         child: Column(
@@ -20,10 +22,12 @@ class Dialogdownloaddata extends StatelessWidget {
             Text(
               'Unduh Data',
               style: GoogleFonts.poppins(
-                  fontSize: 30, color: mainColor, fontWeight: FontWeight.bold),
+                  fontSize: MediaQuery.sizeOf(context).width * 0.02,
+                  color: mainColor,
+                  fontWeight: FontWeight.bold),
             ),
             SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.01,
+              height: MediaQuery.sizeOf(context).height * 0.005,
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -36,31 +40,17 @@ class Dialogdownloaddata extends StatelessWidget {
             SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.01,
             ),
-            Container(
-                width: MediaQuery.sizeOf(context).width * 0.2,
-                height: MediaQuery.sizeOf(context).height * 0.05,
-                decoration: BoxDecoration(color: formColor),
-                child: TextField(
-                  style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: mainColor),
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Tahun',
-                      hintStyle: GoogleFonts.poppins(
-                          fontSize: 20, fontWeight: FontWeight.bold),
-                      contentPadding: EdgeInsets.only(left: 10, top: 5),
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
-                        size: 50,
-                      )),
-                )),
+            Text(
+              'Unduh semua data truck?',
+              style: GoogleFonts.poppins(
+                  fontSize: MediaQuery.sizeOf(context).width * 0.01,
+                  fontWeight: FontWeight.bold),
+            ),
             SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.02,
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: download,
               child: Align(
                   alignment: Alignment.centerRight,
                   child: Container(

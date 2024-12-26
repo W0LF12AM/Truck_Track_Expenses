@@ -6,9 +6,11 @@ import 'package:sqflite/sqflite.dart';
 class TruckProvider with ChangeNotifier {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
   List<Truck> _trucks = [];
+  List<Expense> _expense = [];
   List<double> _maintenanceData = List.filled(12, 0);
 
   List<Truck> get trucks => _trucks;
+  List<Expense> get expenses => _expense;
   List<double> get maintenanceData => _maintenanceData;
 
   Future<void> loadTrucks() async {
@@ -57,8 +59,23 @@ class TruckProvider with ChangeNotifier {
     await loadTrucks();
   }
 
-  Future<void> loadMonthlyMaintenanceData(int truckId) async {
-    _maintenanceData = await _databaseHelper.getMonthlyMaintenanceData(truckId);
+  Future<void> loadMonthlyMaintenanceData() async {
+    _maintenanceData = await _databaseHelper.getMonthlyMaintenanceData();
     notifyListeners();
+  }
+
+  Future<List<Expense>> loadExpensesByTruckId(int truckId) async {
+    _expense = await _databaseHelper.getExpenses(truckId);
+    notifyListeners();
+    return _expense;
+  }
+
+  double getTotalExpense() {
+    return _expense.fold(0, (sum, expense) => sum + expense.harga);
+  }
+
+  double getRemainingBudget(int truckId) {
+    final truck = _trucks.firstWhere((t) => t.id == truckId);
+    return truck.budgetTahunan - getTotalExpense();
   }
 }
