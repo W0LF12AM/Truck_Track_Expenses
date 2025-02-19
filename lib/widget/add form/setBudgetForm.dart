@@ -63,9 +63,9 @@ class _SetbudgetformState extends State<Setbudgetform> {
 
     overlayEntry = OverlayEntry(
         builder: (context) => Positioned(
-            left: MediaQuery.sizeOf(context).width * 0.45,
-            right: MediaQuery.sizeOf(context).width * 0.45,
-            top: MediaQuery.sizeOf(context).height * 0.5,
+            left: MediaQuery.of(context).size.width * 0.45,
+            right: MediaQuery.of(context).size.width * 0.45,
+            top: MediaQuery.of(context).size.height * 0.5,
             child: Material(
               elevation: 4.0,
               child: Container(
@@ -88,7 +88,8 @@ class _SetbudgetformState extends State<Setbudgetform> {
                                 filteredTrucks[index].platNomor,
                                 style: GoogleFonts.poppins(
                                     fontSize:
-                                        MediaQuery.sizeOf(context).width * 0.01,
+                                        MediaQuery.of(context).size.width *
+                                            0.01,
                                     fontWeight: FontWeight.bold),
                               ),
                               onTap: () {
@@ -113,13 +114,13 @@ class _SetbudgetformState extends State<Setbudgetform> {
                           ),
                         )),
             )));
-    Overlay.of(context)!.insert(overlayEntry!);
+    Overlay.of(context).insert(overlayEntry!);
   }
 
   void _saveData() async {
     String budgetText = budgetController.text;
     String sanitizedBudget = budgetText.replaceAll(RegExp(r'[^0-9]'), '');
-    int budgetValue = int.parse(sanitizedBudget);
+    double budgetValue = double.parse(sanitizedBudget);
 
     if (selectedPlatNomor != null) {
       List<Truck> trucks = await DatabaseHelper().getTrucks();
@@ -142,16 +143,13 @@ class _SetbudgetformState extends State<Setbudgetform> {
                 backgroundColor: Colors.transparent,
                 child: Dialogdatadisimpan(
                     titleCard: 'Data Berhasil Disimpan',
-                    pesan: 'Data yang sudah anda set \nberhasil dismpan'),
+                    pesan: 'Data yang sudah anda set \nberhasil disimpan'),
               );
             }).catchError((error) {
           print('error save budget : $error');
         });
       }
     }
-
-    // DatabaseHelper databaseHelper = DatabaseHelper();
-    // databaseHelper.saveBudget(selectedPlatNomor!, budgetValue);
   }
 
   void _onChanged(String value) {
@@ -201,7 +199,7 @@ class _SetbudgetformState extends State<Setbudgetform> {
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.045,
                     left: MediaQuery.sizeOf(context).width * 0.025,
-                    bottom: MediaQuery.sizeOf(context).height * 0.04),
+                    bottom: MediaQuery.of(context).size.height * 0.04),
                 child: Row(
                   children: [
                     Text(
@@ -260,30 +258,27 @@ class _SetbudgetformState extends State<Setbudgetform> {
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: MediaQuery.sizeOf(context).width * 0.05),
-                child: Expanded(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    decoration: BoxDecoration(
-                        color: formColor,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: TextField(
-                        onChanged: _onChanged,
-                        controller: budgetController,
-                        textAlign: TextAlign.start,
-                        textAlignVertical: TextAlignVertical.center,
-                        style: GoogleFonts.poppins(
-                            fontSize: MediaQuery.of(context).size.width * 0.013,
-                            fontWeight: FontWeight.bold),
-                        decoration: InputDecoration(
-                          hintText: 'Budget',
-                          hintStyle: GoogleFonts.poppins(
-                            fontWeight: FontWeight.bold,
-                            fontSize: MediaQuery.of(context).size.width * 0.013,
-                          ),
-                          border: InputBorder.none,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  decoration: BoxDecoration(
+                      color: formColor, borderRadius: BorderRadius.circular(5)),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: TextField(
+                      onChanged: _onChanged,
+                      controller: budgetController,
+                      textAlign: TextAlign.start,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: GoogleFonts.poppins(
+                          fontSize: MediaQuery.of(context).size.width * 0.013,
+                          fontWeight: FontWeight.bold),
+                      decoration: InputDecoration(
+                        hintText: 'Budget',
+                        hintStyle: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.of(context).size.width * 0.013,
                         ),
+                        border: InputBorder.none,
                       ),
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:excel/excel.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,7 +28,7 @@ class UserheaderLandingPage extends StatefulWidget {
 }
 
 class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
-  Future<String> saveAllTrucksExpensesToExcel() async {
+  Future<String?> saveAllTrucksExpensesToExcel() async {
     final truckProvider = Provider.of<TruckProvider>(context, listen: false);
 
     await truckProvider.loadTrucks();
@@ -35,6 +36,8 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
     var excel = Excel.createExcel();
 
     List<Truck> trucks = truckProvider.trucks;
+
+    String? outputDir;
 
     for (var truck in trucks) {
       Sheet sheet = excel[truck.platNomor];
@@ -93,24 +96,46 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
       ]);
     }
 
-    final directory = await getApplicationDocumentsDirectory();
-    final downloadDirectory =
-        Directory('${directory.path}/Downloaded Truck Data');
+    // final directory = await getApplicationDocumentsDirectory();
+    // final downloadDirectory =
+    //     Directory('${directory.path}/Downloaded Truck Data');
 
-    if (!await downloadDirectory.exists()) {
-      await downloadDirectory.create(recursive: true);
+    // if (!await downloadDirectory.exists()) {
+    //   await downloadDirectory.create(recursive: true);
+    // }
+
+    // String baseFileName = 'all trucks expenses.xlsx';
+    // String filePath = '${downloadDirectory.path}/$baseFileName';
+    // var file = File(filePath);
+
+    // int copyKe = 1;
+
+    // while (await file.exists()) {
+    //   copyKe++;
+    //   filePath = '${downloadDirectory.path}/copy $copyKe of $baseFileName';
+    //   file = File(filePath);
+    // }
+
+    try {
+      outputDir = await FilePicker.platform.getDirectoryPath();
+    } catch (e) {
+      print('Error memilih folder: $e');
+      return 'Gagal memilih folder';
     }
 
-    String baseFileName = 'all trucks expenses.xlsx';
-    String filePath = '${downloadDirectory.path}/$baseFileName';
+    if (outputDir == null) {
+      return null;
+    }
+
+    String baseFileName = 'all_trucks_expenses.xlsx';
+    String filePath = '$outputDir/$baseFileName';
     var file = File(filePath);
 
-    int copyKe = 1;
-
-    while (await file.exists()) {
-      copyKe++;
-      filePath = '${downloadDirectory.path}/copy $copyKe of $baseFileName';
+    int copyIndex = 1;
+    while (file.existsSync()) {
+      filePath = '$outputDir/all_trucks_expenses_copy_$copyIndex.xlsx';
       file = File(filePath);
+      copyIndex++;
     }
 
     await file.writeAsBytes(await excel.encode() ?? []);
@@ -121,12 +146,7 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
 
   Future<void> resetAllData() async {
     final truckProvider = Provider.of<TruckProvider>(context, listen: false);
-
-    await DatabaseHelper().clearAllTrucksData();
-    await DatabaseHelper().clearAllExpenses();
-
-    await truckProvider.clearAllTrucks();
-    await truckProvider.clearAllExpenses();
+    await truckProvider.resetExpensesAndBudget();
   }
 
   @override
@@ -248,7 +268,12 @@ class _UserheaderLandingPageState extends State<UserheaderLandingPage> {
               buttonColor: mainColor,
               buttonName: 'Download',
               navigate: () async {
-                String filePath = await saveAllTrucksExpensesToExcel();
+                String? filePath = await saveAllTrucksExpensesToExcel();
+
+                if (filePath == null || filePath.isEmpty) {
+                  return null;
+                }
+
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {

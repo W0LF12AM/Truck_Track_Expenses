@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:excel/excel.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,7 +44,7 @@ class UserheaderLaporanDetail extends StatefulWidget {
 }
 
 class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
-  Future<String> saveTruckExpensesToExcel(int truckId) async {
+  Future<String?> saveTruckExpensesToExcel(int truckId) async {
     final truckProvider = Provider.of<TruckProvider>(context, listen: false);
 
     await truckProvider.loadExpensesByTruckId(truckId);
@@ -62,6 +63,8 @@ class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
     }
 
     List<Expense> expenses = truckProvider.expenses;
+
+    String? outputDir;
 
     var excel = Excel.createExcel();
     Sheet sheet = excel['Sheet1'];
@@ -121,24 +124,48 @@ class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
           'Sisa Budget: Rp ${remainingBudget.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}'),
     ]);
 
-    final directory = await getApplicationDocumentsDirectory();
-    final downloadDirectory =
-        Directory('${directory.path}/Downloaded Truck Data/Truck');
+    // final directory = await getApplicationDocumentsDirectory();
+    // final downloadDirectory =
+    //     Directory('${directory.path}/Downloaded Truck Data/Truck');
 
-    if (!await downloadDirectory.exists()) {
-      await downloadDirectory.create(recursive: true);
+    // if (!await downloadDirectory.exists()) {
+    //   await downloadDirectory.create(recursive: true);
+    // }
+
+    // String baseFileName = '${selectedTruck.platNomor} expenses.xlsx';
+    // String filePath = '${downloadDirectory.path}/$baseFileName';
+    // var file = File(filePath);
+
+    // int copyKe = 1;
+
+    // while (await file.exists()) {
+    //   copyKe++;
+    //   filePath = '${downloadDirectory.path}/copy $copyKe of $baseFileName.xlsx';
+    //   file = File(filePath);
+    // }
+
+    try {
+      outputDir = await FilePicker.platform.getDirectoryPath();
+    } catch (e) {
+      print('Error memilih folder: $e');
+      return 'Gagal memilih folder';
+    }
+
+    if (outputDir == null) {
+      print('gagal cuy');
+      return null;
     }
 
     String baseFileName = '${selectedTruck.platNomor} expenses.xlsx';
-    String filePath = '${downloadDirectory.path}/$baseFileName';
+    String filePath = '$outputDir/$baseFileName';
     var file = File(filePath);
 
     int copyKe = 1;
 
     while (await file.exists()) {
-      copyKe++;
-      filePath = '${downloadDirectory.path}/copy $copyKe of $baseFileName.xlsx';
+      filePath = '$outputDir/${baseFileName} Copy $copyKe.xlsx';
       file = File(filePath);
+      copyKe++;
     }
 
     await file.writeAsBytes(await excel.encode() ?? []);
@@ -185,8 +212,11 @@ class _UserheaderLaporanDetailState extends State<UserheaderLaporanDetail> {
                 Headerlaporanmobil(
                     platnomor: widget.platNomor,
                     navigate: () async {
-                      String filePath =
+                      String? filePath =
                           await saveTruckExpensesToExcel(widget.truckId);
+                      if (filePath == null || filePath.isEmpty) {
+                        return null;
+                      }
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:note_app_vtwo/data/databaseHelper.dart';
+
 import 'package:note_app_vtwo/data/model.dart';
 import 'package:note_app_vtwo/function/provider.dart';
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
@@ -21,7 +21,6 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
   final TextEditingController _onderdilController = TextEditingController();
   final TextEditingController _hagraController = TextEditingController();
   DateTime? _selectedDate;
-
 
   void _onChanged(String value) {
     String sanitizedValue = value.replaceAll(RegExp(r'[^0-9]'), '');
@@ -85,8 +84,12 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
 
     TimeOfDay currentTime = TimeOfDay.now();
 
-    Expense newExpense =
-        Expense(onderdil: onderdil, harga: harga, date: _selectedDate!, id: 0, time: currentTime);
+    Expense newExpense = Expense(
+        onderdil: onderdil,
+        harga: harga,
+        date: _selectedDate!,
+        id: 0,
+        time: currentTime);
 
     widget.truck.addExpense(onderdil, harga, _selectedDate!, currentTime);
 
@@ -152,7 +155,6 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
               SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.02,
               ),
-
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
@@ -214,7 +216,6 @@ class _TambahlaporanpengeluaranState extends State<Tambahlaporanpengeluaran> {
                   ),
                 ),
               ),
-
               SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.03,
               ),

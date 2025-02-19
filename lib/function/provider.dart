@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:note_app_vtwo/data/databaseHelper.dart';
 import 'package:note_app_vtwo/data/model.dart';
-import 'package:sqflite/sqflite.dart';
 
 class TruckProvider with ChangeNotifier {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
@@ -14,9 +13,8 @@ class TruckProvider with ChangeNotifier {
   List<double> get maintenanceData => _maintenanceData;
 
   Future<void> loadTrucks() async {
-    // _trucks = await _databaseHelper.getTrucks();
-
     final truckData = await _databaseHelper.getAllTrucks();
+
     final List<Truck> trucks = [];
 
     for (var truckMap in truckData) {
@@ -40,7 +38,6 @@ class TruckProvider with ChangeNotifier {
   Future<void> deleteTruck(int id) async {
     await _databaseHelper.deleteExpensesByTruckId(id);
     await _databaseHelper.deleteTruck(id);
-
     await loadTrucks();
   }
 
@@ -49,7 +46,7 @@ class TruckProvider with ChangeNotifier {
     await loadTrucks();
   }
 
-  Future<void> updateBudget(int truckId, int newBudget) async {
+  Future<void> updateBudget(int truckId, double newBudget) async {
     await _databaseHelper.saveBudget(truckId, newBudget);
     await loadTrucks();
   }
@@ -84,8 +81,14 @@ class TruckProvider with ChangeNotifier {
     notifyListeners();
   }
 
-    Future<void> clearAllExpenses() async {
-    _trucks.clear();
+  Future<void> clearAllExpenses() async {
+    _expense.clear();
     notifyListeners();
+  }
+
+  Future<void> resetExpensesAndBudget() async {
+    await _databaseHelper.clearAllExpenses();
+    await _databaseHelper.resetAllBudgets();
+    await loadTrucks();
   }
 }

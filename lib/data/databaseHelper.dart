@@ -1,6 +1,7 @@
 import 'package:note_app_vtwo/data/model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -8,7 +9,10 @@ class DatabaseHelper {
 
   static Database? _database;
 
-  DatabaseHelper._internal();
+  DatabaseHelper._internal() {
+    // Initialize sqflite_ffi
+    sqfliteFfiInit();
+  }
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -86,10 +90,17 @@ class DatabaseHelper {
     }
   }
 
-  Future<void> saveBudget(int id, int budgetTahunan) async {
+  Future<void> saveBudget(int id, double budgetTahunan) async {
     final db = await database;
     await db.update('trucks', {'budgetTahunan': budgetTahunan},
         where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<bool> isPlatNomorExist(String platNomor) async {
+    final db = await database;
+    final result = await db
+        .query('trucks', where: 'platNomor = ?', whereArgs: ['platNomor']);
+    return result.isNotEmpty;
   }
 
   //-----------------------------------------------------------------------------//
@@ -104,7 +115,7 @@ class DatabaseHelper {
     final db = await database;
     await db.insert(
       'expenses',
-      expense.toMap(expense.id), // Pastikan toMap() mencakup waktu
+      expense.toMap(expense.id), // Ensure toMap() includes time
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -149,6 +160,16 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> clearAllExpenses() async {
+    final db = await database;
+    await db.delete('expenses');
+  }
+
+  Future<void> resetAllBudgets() async {
+    final db = await database;
+    await db.rawUpdate('UPDATE trucks SET budgetTahunan = 0');
+  }
+
   //-----------------------------------------------------------------------------//
 
   Future<List<double>> getMonthlyMaintenanceData() async {
@@ -168,10 +189,5 @@ class DatabaseHelper {
   Future<void> clearAllTrucksData() async {
     final db = await database;
     await db.delete('trucks');
-  }
-
-  Future<void> clearAllExpenses() async {
-    final db = await database;
-    await db.delete('expenses');
   }
 }

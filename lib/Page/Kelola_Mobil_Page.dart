@@ -5,6 +5,7 @@ import 'package:note_app_vtwo/data/model.dart';
 import 'package:note_app_vtwo/function/provider.dart';
 
 import 'package:note_app_vtwo/settings/style_and_colors_utils.dart';
+import 'package:note_app_vtwo/widget/dialog/dialogTruckSudahAda.dart';
 import 'package:note_app_vtwo/widget/entity/entitasMobil.dart';
 import 'package:note_app_vtwo/widget/add%20form/tambahMobilDialog.dart';
 import 'package:note_app_vtwo/widget/header/userHeader_custom.dart';
@@ -21,8 +22,6 @@ class _KelolaMobilPageState extends State<KelolaMobilPage> {
   List<Truck> _trucks = [];
   List<Truck> _filteredTrucks = [];
   String _searchQuery = '';
-
-
 
   @override
   void initState() {
@@ -59,6 +58,26 @@ class _KelolaMobilPageState extends State<KelolaMobilPage> {
 
   void _addTruck(String platNomor) async {
     final truckProvider = Provider.of<TruckProvider>(context, listen: false);
+
+    bool exist = truckProvider.trucks.any((truck) =>
+        truck.platNomor.toLowerCase().trim() == platNomor.toLowerCase().trim());
+
+    if (exist) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Dialog(
+                backgroundColor: Colors.transparent,
+                child: Dialogtrucksudahada(
+                    titleCard: 'Truck Already Exist',
+                    pesan: 'Truck dengan plat nomor tersebut sudah terdaftar.'),
+              );
+            });
+      });
+
+      return;
+    }
     Truck newTruck = Truck(
         id: 0,
         platNomor: platNomor,
