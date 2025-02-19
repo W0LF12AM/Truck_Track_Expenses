@@ -33,7 +33,7 @@ class MultiBarChart extends StatelessWidget {
               gridData: const FlGridData(show: true),
               titlesData: FlTitlesData(
                 leftTitles: AxisTitles(
-                  sideTitles: SideTitles(showTitles: true),
+                  sideTitles: SideTitles(showTitles: false),
                 ),
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
